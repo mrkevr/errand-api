@@ -19,7 +19,7 @@ import dev.mrkevr.errandapi.library.exception.ResourceNotFoundException;
 import jakarta.validation.ValidationException;
 
 @RestControllerAdvice
-public class ApplicationExceptionHandlerController extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandlerController extends ResponseEntityExceptionHandler {
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -59,5 +59,4 @@ public class ApplicationExceptionHandlerController extends ResponseEntityExcepti
 		problemDetail.setProperty("timeStamp", LocalDateTime.now());
 		return problemDetail;
 	}
-
 }

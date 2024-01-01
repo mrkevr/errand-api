@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.user;
+package dev.mrkevr.errandapi.user.api;
 
 import java.util.Optional;
 

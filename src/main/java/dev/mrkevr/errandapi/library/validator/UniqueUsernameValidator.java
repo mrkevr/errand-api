@@ -2,7 +2,7 @@ package dev.mrkevr.errandapi.library.validator;
 
 import org.springframework.stereotype.Component;
 
-import dev.mrkevr.errandapi.user.UserRepository;
+import dev.mrkevr.errandapi.user.api.UserRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;

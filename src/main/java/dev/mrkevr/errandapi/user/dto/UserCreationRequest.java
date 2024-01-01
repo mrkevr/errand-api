@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.user;
+package dev.mrkevr.errandapi.user.dto;
 
 import dev.mrkevr.errandapi.library.validator.UniqueEmail;
 import dev.mrkevr.errandapi.library.validator.UniqueUsername;
@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-class UserCreationRequest {
+public class UserCreationRequest {
 	
 	@UniqueUsername
 	@NotEmpty(message = "Field `username` must not be empty")

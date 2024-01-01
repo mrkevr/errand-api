@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.user;
+package dev.mrkevr.errandapi.user.api;
 
 import dev.mrkevr.errandapi.library.entity.GenericEntity;
 import jakarta.persistence.Column;

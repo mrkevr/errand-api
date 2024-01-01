@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.user;
+package dev.mrkevr.errandapi.user.api;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,6 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import dev.mrkevr.errandapi.library.exception.ApiException;
 import dev.mrkevr.errandapi.library.exception.ResourceNotFoundException;
+import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
+import dev.mrkevr.errandapi.user.dto.UserResponse;
+import dev.mrkevr.errandapi.user.exception.UserNotFoundException;
+import dev.mrkevr.errandapi.user.util.UserMapper;
 import dev.mrkevr.errandapi.util.ImageFileManager;
 import lombok.RequiredArgsConstructor;
 
@@ -33,19 +37,19 @@ class UserService {
 	
 	public UserResponse getById(String id) {
 		 User user = userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Could not found user with that id"));
+				.orElseThrow(() -> new UserNotFoundException("Could not found user with that id"));
 		 return userMapper.map(user);
 	}
 
 	public UserResponse getByUsername(String username) {
 		 User user = userRepository.findByUsername(username)
-				.orElseThrow(() -> new ResourceNotFoundException("Could not found user with that username"));
+				.orElseThrow(() -> new UserNotFoundException("Could not found user with that username"));
 		 return userMapper.map(user);
 	}
 
 	public UserResponse getByEmail(String email) {
 		 User user = userRepository.findByEmail(email)
-				.orElseThrow(() -> new ResourceNotFoundException("Could not found user with that email"));
+				.orElseThrow(() -> new UserNotFoundException("Could not found user with that email"));
 		 return userMapper.map(user);
 	}
 	

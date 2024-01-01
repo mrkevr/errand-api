@@ -1,12 +1,15 @@
-package dev.mrkevr.errandapi.user;
+package dev.mrkevr.errandapi.user.util;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import dev.mrkevr.errandapi.user.api.User;
+import dev.mrkevr.errandapi.user.dto.UserResponse;
+
 @Component
-class UserMapper {
+public class UserMapper {
 	
 	private final String BASE_URL = "http://localhost:9001";
 	

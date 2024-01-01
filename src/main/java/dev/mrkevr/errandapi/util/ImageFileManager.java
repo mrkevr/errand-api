@@ -19,7 +19,7 @@ public class ImageFileManager {
 	
 	@Value("${file.image.directory}")
 	private String imageDirectory;
-	
+
 	public String uploadImageFileToDirectory(String fileName, MultipartFile file) throws IOException {
 		String filePath = imageDirectory + File.separator + fileName + this.getFileExtension(file.getOriginalFilename());
 		try {
@@ -32,16 +32,18 @@ public class ImageFileManager {
 		}
 		return filePath;
 	}
-	
+
 	public byte[] getImageByFilePath(String filePath) {
 		
-		
+		File file = new File(filePath);
+		if(!file.isFile() || !file.canRead()) {
+			throw new RuntimeException("Image file not found");
+		}
 		
 		try {
             Path imagePath = Paths.get(filePath);
             // Load the image file as a resource
             Resource resource = new UrlResource(imagePath.toUri());
-
             // Read the image file into an InputStream
             try (InputStream inputStream = resource.getInputStream()) {
                 // Read the image bytes into a byte array
@@ -52,12 +54,12 @@ public class ImageFileManager {
         } catch (IOException e) {
             // Handle exceptions such as file not found or IO errors
             e.printStackTrace();
-            throw new RuntimeException("File not found");
+            throw new RuntimeException("Image file reading error");
         }
 	}
 	
 	/**
-	 * Removes all characters before the last 'DOT' from the name.
+	 * Remove all characters before the last 'DOT' from the name.
 	 */
 	private String getFileExtension(String name) {
 		String extension;

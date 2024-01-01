@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.user;
+package dev.mrkevr.errandapi.user.dto;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.user;
+package dev.mrkevr.errandapi.user.api;
 
 import java.net.URI;
 import java.util.List;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import dev.mrkevr.errandapi.library.validator.ValidImageFile;
+import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
+import dev.mrkevr.errandapi.user.dto.UserResponse;
 import dev.mrkevr.errandapi.util.ImageFileManager;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
