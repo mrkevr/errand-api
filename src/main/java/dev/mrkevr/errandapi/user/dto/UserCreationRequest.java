@@ -1,7 +1,7 @@
 package dev.mrkevr.errandapi.user.dto;
 
-import dev.mrkevr.errandapi.library.validator.UniqueEmail;
-import dev.mrkevr.errandapi.library.validator.UniqueUsername;
+import dev.mrkevr.errandapi.common.validator.UniqueEmail;
+import dev.mrkevr.errandapi.common.validator.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

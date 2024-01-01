@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.library.entity;
+package dev.mrkevr.errandapi.common.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -19,6 +19,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class GenericEntity implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GenericGenerator(name = "entity_id_seq", type = GeneticEntityIdGenerator.class)

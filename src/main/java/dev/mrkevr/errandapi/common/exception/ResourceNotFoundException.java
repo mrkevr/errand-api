@@ -1,7 +1,9 @@
-package dev.mrkevr.errandapi.library.exception;
+package dev.mrkevr.errandapi.common.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
-	
+
+	private static final long serialVersionUID = 1L;
+
 	public ResourceNotFoundException() {
 		super("Resource not found");
 	}

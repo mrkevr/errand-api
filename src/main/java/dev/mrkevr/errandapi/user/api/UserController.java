@@ -1,7 +1,9 @@
 package dev.mrkevr.errandapi.user.api;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import dev.mrkevr.errandapi.library.validator.ValidImageFile;
+import dev.mrkevr.errandapi.common.dto.ResponseEntityBody;
+import dev.mrkevr.errandapi.common.validator.ValidImageFile;
 import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
 import dev.mrkevr.errandapi.user.dto.UserResponse;
 import dev.mrkevr.errandapi.util.ImageFileManager;
@@ -28,7 +31,7 @@ import lombok.experimental.FieldDefaults;
 
 @Validated
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 class UserController {
@@ -37,17 +40,28 @@ class UserController {
 	ImageFileManager imageFileManager;
 	
 	@GetMapping
-	ResponseEntity<List<UserResponse>> getAll(
+	ResponseEntity<ResponseEntityBody> getAll(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "1000") int size) {
 		List<UserResponse> userResponses = userService.getAll(page, size);
-		return ResponseEntity.ok(userResponses);
+		
+		String title = "Users found";
+		Map<String, Object> body = new HashMap<>();
+		body.put("page", page);
+		body.put("size", size);
+		body.put("users", userResponses);
+		
+		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.OK, body);
+		return ResponseEntity.ok(responseEntityBody);
 	}
 
 	@GetMapping("/{id}")
-	ResponseEntity<UserResponse> getByID(@PathVariable String id) {
+	ResponseEntity<ResponseEntityBody> getByID(@PathVariable String id) {
 		UserResponse userResponse = userService.getById(id);
-		return ResponseEntity.ok(userResponse);
+
+		String title = "User found successfully";
+		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.OK, Map.of("user", userResponse));
+		return ResponseEntity.ok(responseEntityBody);
 	}
 	
 	@GetMapping("/{id}/avatar")
@@ -67,21 +81,15 @@ class UserController {
 	}
 	
 	@PostMapping
-	ResponseEntity<?> saveUser(
-			@Valid @RequestPart UserCreationRequest creationRequest,
+	ResponseEntity<ResponseEntityBody> saveUser(
+			@Valid @RequestPart(name = "creationRequest") UserCreationRequest creationRequest,
 			@Valid @ValidImageFile @RequestParam(name = "avatarImageFile", required = true) MultipartFile avatarImageFile) {
 		
 		UserResponse userResponse = userService.addUser(creationRequest, avatarImageFile);
-		String uri = "/users/" + userResponse.getUsername();
-		String message = "User is successfully created";
+		String title = "User is successfully created";
+		String uri = "/users/" + userResponse.getId();
 		
-//		ResponseEntityBody body = ResponseEntityBody.builder()
-//			.title(HttpStatus.CREATED.toString())
-//			.status(HttpStatus.CREATED.value())
-//			.timeStamp(LocalDateTime.now())
-//			.message(message)
-//			.build();
-		
-		return ResponseEntity.created(URI.create(uri)).body(userResponse);
+		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.CREATED, Map.of("savedUser", userResponse));
+		return ResponseEntity.created(URI.create(uri)).body(responseEntityBody);
 	}
 }

@@ -1,6 +1,6 @@
 package dev.mrkevr.errandapi.user.api;
 
-import dev.mrkevr.errandapi.library.entity.GenericEntity;
+import dev.mrkevr.errandapi.common.entity.GenericEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -21,6 +21,8 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "users")
 @Entity(name = "User")
 public class User extends GenericEntity {
+
+	private static final long serialVersionUID = 1L;
 
 	@Column(name = "username")
 	String username;

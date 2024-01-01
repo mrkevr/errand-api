@@ -11,7 +11,7 @@ import dev.mrkevr.errandapi.user.dto.UserResponse;
 @Component
 public class UserMapper {
 	
-	private final String BASE_URL = "http://localhost:9001";
+	private final String BASE_URL = "http://localhost:9001/api/users/";
 	
 	public UserResponse map(User user) {
 		
@@ -19,7 +19,7 @@ public class UserMapper {
 			.id(user.getId())
 			.username(user.getUsername())
 			.name(user.getName())
-			.avatar(BASE_URL + "/users/" + user.getId() + "/avatar")
+			.avatar(BASE_URL + user.getId() + "/avatar")
 			.aboutMe(user.getAboutMe())
 			.phone(user.getPhone())
 			.email(user.getEmail())

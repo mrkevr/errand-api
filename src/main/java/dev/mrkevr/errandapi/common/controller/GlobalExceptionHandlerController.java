@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.global;
+package dev.mrkevr.errandapi.common.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import dev.mrkevr.errandapi.library.exception.ResourceNotFoundException;
+import dev.mrkevr.errandapi.common.exception.ResourceNotFoundException;
 import jakarta.validation.ValidationException;
 
 @RestControllerAdvice
@@ -46,6 +46,9 @@ public class GlobalExceptionHandlerController extends ResponseEntityExceptionHan
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleException(Exception ex) {
+		
+		ex.printStackTrace();
+		
 		ProblemDetail problemDetail = createProblemDetail(ex, HttpStatus.BAD_REQUEST);
 		return ResponseEntity.of(problemDetail).build();
 	}

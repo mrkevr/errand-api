@@ -1,12 +1,13 @@
-package dev.mrkevr.errandapi.library.entity;
+package dev.mrkevr.errandapi.common.entity;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
 public class GeneticEntityIdGenerator implements IdentifierGenerator {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Object generate(SharedSessionContractImplementor session, Object object) {

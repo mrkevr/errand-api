@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import dev.mrkevr.errandapi.library.exception.ApiException;
-import dev.mrkevr.errandapi.library.exception.ResourceNotFoundException;
+import dev.mrkevr.errandapi.common.exception.ApiException;
+import dev.mrkevr.errandapi.common.exception.ResourceNotFoundException;
 import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
 import dev.mrkevr.errandapi.user.dto.UserResponse;
 import dev.mrkevr.errandapi.user.exception.UserNotFoundException;

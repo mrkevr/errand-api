@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.library.validator;
+package dev.mrkevr.errandapi.common.validator;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

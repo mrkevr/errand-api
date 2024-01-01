@@ -1,4 +1,4 @@
-package dev.mrkevr.errandapi.library.validator;
+package dev.mrkevr.errandapi.common.validator;
 
 import org.springframework.stereotype.Component;
 
@@ -9,12 +9,12 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, String> {
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
 	private final UserRepository userRepository;
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		return value != null && !userRepository.existsByUsername(value);
+		return value != null && !userRepository.existsByEmail(value);
 	}
 }
