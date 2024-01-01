@@ -66,7 +66,6 @@ class SecurityConfig {
 			.password(this.passwordEncoder().encode("admin"))
 			.roles("ADMIN")
 			.build();
-		
 		return new InMemoryUserDetailsManager(admin);
 	}
 }

@@ -19,11 +19,13 @@ public class UserMapper {
 			.id(user.getId())
 			.username(user.getUsername())
 			.name(user.getName())
+			.title(user.getTitle())
 			.avatar(BASE_URL + user.getId() + "/avatar")
 			.aboutMe(user.getAboutMe())
 			.phone(user.getPhone())
 			.email(user.getEmail())
 			.rating(user.getRating())
+			.errandsWorked(user.getErrandsWorked())
 			.created(user.getCreated())
 			.modified(user.getModified())
 			.build();

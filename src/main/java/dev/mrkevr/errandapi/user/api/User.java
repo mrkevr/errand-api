@@ -29,6 +29,9 @@ public class User extends GenericEntity {
 
 	@Column(name = "name")
 	String name;
+	
+	@Column(name = "title")
+	String title;
 
 	@Column(name = "password")
 	String password;
@@ -47,7 +50,10 @@ public class User extends GenericEntity {
 
 	@Column(name = "rating")
 	int rating;
-
+	
+	@Column(name = "errands_worked")
+	int errandsWorked;
+	
 	@Override
 	public String getIdPrefix() {
 		return "USER";

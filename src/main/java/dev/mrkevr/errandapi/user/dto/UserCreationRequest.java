@@ -28,6 +28,10 @@ public class UserCreationRequest {
 	@Size(min = 6, max = 120, message = "Field `name` must be 6-120 chatacters")
 	String name;
 	
+	@NotEmpty(message = "Field `title` must not be empty")
+	@Size(min = 6, max = 120, message = "Field `title` must be 6-120 chatacters")
+	String title;
+	
 	@UniqueEmail
 	@NotBlank(message = "Field `email` must not be blank")
 	@Email(message = "Invalid `email` format")

@@ -17,6 +17,8 @@ public class UserResponse {
 	String username;
 
 	String name;
+	
+	String title;
 
 	String avatar;
 
@@ -27,6 +29,8 @@ public class UserResponse {
 	String aboutMe;
 
 	int rating;
+	
+	int errandsWorked;
 
 	LocalDateTime created;
 

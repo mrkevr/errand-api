@@ -66,10 +66,12 @@ class UserService {
 			.username(userCreationRequest.getUsername())
 			.password(passwordEncoder.encode(userCreationRequest.getPassword()))
 			.name(userCreationRequest.getName())
+			.title(userCreationRequest.getTitle())
 			.phone(userCreationRequest.getPhone())
 			.email(userCreationRequest.getEmail())
 			.aboutMe(userCreationRequest.getAboutMe())
 			.rating(0)
+			.errandsWorked(0)
 			.build();
 		
 		String avatarFilePath = this.saveImageToDirectory(userCreationRequest.getUsername(), avatarImageFile);	
