@@ -6,5 +6,4 @@ public enum ErrandStatus {
 	OCCUPIED, 
 	CANCELLED, 
 	COMPLETE;
-	
 }

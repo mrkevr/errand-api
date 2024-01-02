@@ -14,7 +14,6 @@ public class UserMapper {
 	private final String BASE_URL = "http://localhost:9001/api/users/";
 	
 	public UserResponse map(User user) {
-		
 		UserResponse userResponse = UserResponse.builder()
 			.id(user.getId())
 			.username(user.getUsername())
@@ -28,7 +27,6 @@ public class UserMapper {
 			.errandsWorked(user.getErrandsWorked())
 			.joined(user.getCreated().toLocalDate())
 			.build();
-			
 		return userResponse;
 	}
 

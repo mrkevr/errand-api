@@ -40,6 +40,9 @@ public class Errand extends GenericEntity {
 	@Column(name = "description")
 	String description;
 	
+	@Column(name = "image")
+	String image;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "errand_category")
 	ErrandCategory errandCategory;
@@ -49,7 +52,7 @@ public class Errand extends GenericEntity {
 		@AttributeOverride(name = "address", column = @Column(name = "address")),
 		@AttributeOverride(name = "latitude", column = @Column(name = "latitude")),
 		@AttributeOverride(name = "longitude", column = @Column(name = "longitude")) })
-	Location location;
+	ErrandLocation errandLocation;
 	
 	@Column(name = "compensation")
 	double compensation;
