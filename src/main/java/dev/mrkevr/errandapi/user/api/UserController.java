@@ -45,7 +45,7 @@ class UserController {
 			@RequestParam(defaultValue = "1000") int size) {
 		List<UserResponse> userResponses = userService.getAll(page, size);
 		
-		String title = "Users found";
+		String title = "Users";
 		Map<String, Object> body = new HashMap<>();
 		body.put("page", page);
 		body.put("size", size);
@@ -56,11 +56,11 @@ class UserController {
 	}
 
 	@GetMapping("/{id}")
-	ResponseEntity<ResponseEntityBody> getByID(@PathVariable String id) {
+	ResponseEntity<ResponseEntityBody> getById(@PathVariable String id) {
 		UserResponse userResponse = userService.getById(id);
 
 		String title = "User found successfully";
-		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.OK, Map.of("user", userResponse));
+		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.OK, userResponse);
 		return ResponseEntity.ok(responseEntityBody);
 	}
 	
@@ -68,7 +68,6 @@ class UserController {
 	ResponseEntity<byte[]> getAvatarById(@PathVariable String id) {
 		
 		String avatar = userService.getAvatarById(id);
-		
 		byte[] imageBytes = imageFileManager.getImageByFilePath(avatar);
 		
 		// Set appropriate headers for the image response
@@ -81,15 +80,15 @@ class UserController {
 	}
 	
 	@PostMapping
-	ResponseEntity<ResponseEntityBody> saveUser(
+	ResponseEntity<ResponseEntityBody> save(
 			@Valid @RequestPart(name = "creationRequest") UserCreationRequest creationRequest,
 			@Valid @ValidImageFile @RequestParam(name = "avatarImageFile", required = true) MultipartFile avatarImageFile) {
 		
-		UserResponse userResponse = userService.addUser(creationRequest, avatarImageFile);
-		String title = "User is successfully created";
-		String uri = "/users/" + userResponse.getId();
+		UserResponse userResponse = userService.add(creationRequest, avatarImageFile);
+		String title = "User created successfully";
+		String uri = "/api/users/" + userResponse.getId();
 		
-		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.CREATED, Map.of("savedUser", userResponse));
+		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.CREATED, userResponse);
 		return ResponseEntity.created(URI.create(uri)).body(responseEntityBody);
 	}
 }

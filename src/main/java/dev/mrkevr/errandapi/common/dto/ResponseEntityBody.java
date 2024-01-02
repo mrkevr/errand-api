@@ -1,7 +1,6 @@
 package dev.mrkevr.errandapi.common.dto;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 
@@ -16,13 +15,13 @@ public class ResponseEntityBody {
 	String title;
 	String status;
 	LocalDateTime timeStamp;
-	Map<String, Object> body;
+	Object body;
 	
-	public static ResponseEntityBody of(String title, HttpStatus httpStatus, Map<String, Object> body) {
+	public static ResponseEntityBody of(String title, HttpStatus httpStatus, Object body) {
 		return new ResponseEntityBody(title, httpStatus.toString(), LocalDateTime.now(), body);
 	}
 
-	private ResponseEntityBody(String title, String status, LocalDateTime timeStamp, Map<String, Object> body) {
+	private ResponseEntityBody(String title, String status, LocalDateTime timeStamp, Object body) {
 		this.title = title;
 		this.status = status;
 		this.timeStamp = timeStamp;

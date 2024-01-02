@@ -1,5 +1,6 @@
 package dev.mrkevr.errandapi.user.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.AccessLevel;
@@ -32,7 +33,5 @@ public class UserResponse {
 	
 	int errandsWorked;
 
-	LocalDateTime created;
-
-	LocalDateTime modified;
+	LocalDate joined;
 }

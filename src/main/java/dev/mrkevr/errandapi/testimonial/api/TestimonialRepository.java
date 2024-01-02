@@ -1,11 +1,13 @@
 package dev.mrkevr.errandapi.testimonial.api;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface TestimonialRepository extends JpaRepository<Testimonial, String> {
 
-	List<Testimonial> findByUserId(String userId);
-	
+	@Query("SELECT t FROM Testimonial t WHERE t.userId = :userId")
+	Page<Testimonial> findByUserId(@Param("userId") String userId, Pageable pageable);
 }

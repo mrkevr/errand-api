@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import dev.mrkevr.errandapi.user.exception.UserNotFoundException;
 
 @RestControllerAdvice
-public class UserControllerAdvice {
+class UserControllerAdvice {
 
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex) {

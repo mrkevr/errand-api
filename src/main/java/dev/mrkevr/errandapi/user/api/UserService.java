@@ -17,17 +17,20 @@ import dev.mrkevr.errandapi.user.dto.UserResponse;
 import dev.mrkevr.errandapi.user.exception.UserNotFoundException;
 import dev.mrkevr.errandapi.user.util.UserMapper;
 import dev.mrkevr.errandapi.util.ImageFileManager;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 class UserService {
 
-	private final UserRepository userRepository;
-	private final UserMapper userMapper;
-	private final PasswordEncoder passwordEncoder;
-	private final ImageFileManager imageFileManager;
+	UserRepository userRepository;
+	UserMapper userMapper;
+	PasswordEncoder passwordEncoder;
+	ImageFileManager imageFileManager;
 
 	public List<UserResponse> getAll(int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size);
@@ -60,7 +63,7 @@ class UserService {
 	}
 	
 	@Transactional
-	public UserResponse addUser(UserCreationRequest userCreationRequest, MultipartFile avatarImageFile) {
+	public UserResponse add(UserCreationRequest userCreationRequest, MultipartFile avatarImageFile) {
 		
 		User user = User.builder()
 			.username(userCreationRequest.getUsername())

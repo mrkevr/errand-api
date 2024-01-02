@@ -26,8 +26,7 @@ public class UserMapper {
 			.email(user.getEmail())
 			.rating(user.getRating())
 			.errandsWorked(user.getErrandsWorked())
-			.created(user.getCreated())
-			.modified(user.getModified())
+			.joined(user.getCreated().toLocalDate())
 			.build();
 			
 		return userResponse;
