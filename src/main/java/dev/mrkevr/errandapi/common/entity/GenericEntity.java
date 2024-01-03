@@ -29,9 +29,11 @@ public abstract class GenericEntity implements Serializable {
 	private String id;
 
 	@CreationTimestamp
+	@Column(name = "created", updatable = false)
 	private LocalDateTime created;
 
 	@UpdateTimestamp
+	@Column(name = "modified")
 	private LocalDateTime modified;
 
 	public abstract String getIdPrefix();

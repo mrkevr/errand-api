@@ -32,8 +32,8 @@ public class ErrandCreationRequest {
 	@NotNull(message = "Field `errandCategory` must not be null")
 	ErrandCategory errandCategory;
 
-	@NotNull(message = "Field `errandLocation` must not be null")
 	@Valid
+	@NotNull(message = "Field `errandLocation` must not be null")
 	ErrandLocation errandLocation;
 
 	@NotNull(message = "Field `compensation` must not be null")

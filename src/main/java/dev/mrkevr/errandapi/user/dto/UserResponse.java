@@ -1,7 +1,6 @@
 package dev.mrkevr.errandapi.user.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,7 +20,7 @@ public class UserResponse {
 	
 	String title;
 
-	String avatar;
+	String avatarUrl;
 
 	String email;
 

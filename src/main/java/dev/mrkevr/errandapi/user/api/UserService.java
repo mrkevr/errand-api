@@ -10,13 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import dev.mrkevr.errandapi.common.exception.ApiException;
-import dev.mrkevr.errandapi.common.exception.ResourceNotFoundException;
+import dev.mrkevr.errandapi.imagefile.api.ImageFileService;
 import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
 import dev.mrkevr.errandapi.user.dto.UserResponse;
 import dev.mrkevr.errandapi.user.exception.UserNotFoundException;
 import dev.mrkevr.errandapi.user.util.UserMapper;
-import dev.mrkevr.errandapi.util.ImageFileManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,7 +28,7 @@ class UserService {
 	UserRepository userRepository;
 	UserMapper userMapper;
 	PasswordEncoder passwordEncoder;
-	ImageFileManager imageFileManager;
+	ImageFileService imageFileService;
 
 	public List<UserResponse> getAll(int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size);
@@ -56,14 +54,8 @@ class UserService {
 		 return userMapper.map(user);
 	}
 	
-	public String getAvatarById(String id) {
-		 String avatar = userRepository.getAvatarById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Could not found avatar with that id"));
-		 return avatar;
-	}
-	
 	@Transactional
-	public UserResponse add(UserCreationRequest userCreationRequest, MultipartFile avatarImageFile) {
+	public UserResponse add(UserCreationRequest userCreationRequest, MultipartFile avatarImageFile) throws IOException {
 		
 		User user = User.builder()
 			.username(userCreationRequest.getUsername())
@@ -77,22 +69,12 @@ class UserService {
 			.errandsWorked(0)
 			.build();
 		
-		String avatarFilePath = this.saveImageToDirectory(userCreationRequest.getUsername(), avatarImageFile);	
-		user.setAvatar(avatarFilePath);
+		// Save the image file and save the image url to user
+		String avatarUrl = imageFileService.save(avatarImageFile);
+		user.setAvatarUrl(avatarUrl);
 		
 		User savedUser = userRepository.save(user);
+
 		return userMapper.map(savedUser);
-	}
-	
-	// Save the image file to target directory and return the file path
-	private String saveImageToDirectory(String username, MultipartFile imageFile) {
-		String filePath = "";
-		try {
-			filePath= imageFileManager.uploadImageFileToDirectory(username, imageFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new ApiException(e.getMessage());
-		}
-		return filePath;
 	}
 }

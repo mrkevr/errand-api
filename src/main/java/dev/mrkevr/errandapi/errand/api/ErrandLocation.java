@@ -2,6 +2,7 @@ package dev.mrkevr.errandapi.errand.api;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,8 +21,10 @@ public class ErrandLocation {
 	String address;
 
 	@Pattern(regexp = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?)$", message = "Field `latitude` is invalid")
+	@NotNull(message = "Field `latitude` must not be null")
 	double latitude;
 
 	@Pattern(regexp = "^[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$", message = "Field `longitude` is invalid")
+	@NotNull(message = "Field `longitude` must not be null")
 	double longitude;
 }

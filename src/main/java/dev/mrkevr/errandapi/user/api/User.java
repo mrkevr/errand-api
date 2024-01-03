@@ -10,11 +10,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @Builder
+@ToString()
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -36,8 +38,8 @@ public class User extends GenericEntity {
 	@Column(name = "password")
 	String password;
 
-	@Column(name = "avatar")
-	String avatar;
+	@Column(name = "avatar_url")
+	String avatarUrl;
 
 	@Column(name = "email")
 	String email;

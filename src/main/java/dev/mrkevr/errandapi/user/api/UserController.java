@@ -1,13 +1,12 @@
 package dev.mrkevr.errandapi.user.api;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +22,6 @@ import dev.mrkevr.errandapi.common.dto.ResponseEntityBody;
 import dev.mrkevr.errandapi.common.validator.ValidImageFile;
 import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
 import dev.mrkevr.errandapi.user.dto.UserResponse;
-import dev.mrkevr.errandapi.util.ImageFileManager;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +35,6 @@ import lombok.experimental.FieldDefaults;
 class UserController {
 	
 	UserService userService;
-	ImageFileManager imageFileManager;
 	
 	@GetMapping
 	ResponseEntity<ResponseEntityBody> getAll(
@@ -64,27 +61,12 @@ class UserController {
 		return ResponseEntity.ok(responseEntityBody);
 	}
 	
-	@GetMapping("/{id}/avatar")
-	ResponseEntity<byte[]> getAvatarById(@PathVariable String id) {
-		
-		String avatar = userService.getAvatarById(id);
-		byte[] imageBytes = imageFileManager.getImageByFilePath(avatar);
-		
-		// Set appropriate headers for the image response
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.IMAGE_JPEG); // Change the media type based on your image format
-		headers.setContentLength(imageBytes.length);
-			
-		// Return the image bytes in the response
-		return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
-	}
-	
 	@PostMapping
 	ResponseEntity<ResponseEntityBody> save(
-			@Valid @RequestPart(name = "creationRequest") UserCreationRequest creationRequest,
-			@Valid @ValidImageFile @RequestParam(name = "avatarImageFile", required = true) MultipartFile avatarImageFile) {
+			@Valid @RequestPart(name = "creationRequest") UserCreationRequest userCreationRequest,
+			@Valid @ValidImageFile @RequestParam(name = "avatarImageFile", required = true) MultipartFile avatarImageFile) throws IOException {
 		
-		UserResponse userResponse = userService.add(creationRequest, avatarImageFile);
+		UserResponse userResponse = userService.add(userCreationRequest, avatarImageFile);
 		String title = "User created successfully";
 		String uri = "/api/users/" + userResponse.getId();
 		
