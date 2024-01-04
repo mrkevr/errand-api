@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -24,7 +25,7 @@ public class Application {
 //	@Bean
 	DataSourceInitializer dataSourceInitializer(@Qualifier("dataSource") final DataSource dataSource) {
 	    ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-	    resourceDatabasePopulator.addScript(new ClassPathResource("/mock_users.sql"));
+	    resourceDatabasePopulator.addScript(new ClassPathResource("/sql/mock_users_1000.sql"));
 	    DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
 	    dataSourceInitializer.setDataSource(dataSource);
 	    dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);

@@ -36,6 +36,12 @@ class UserService {
 		return userMapper.map(users.getContent());
 	}
 	
+	public List<UserResponse> getAllWithQuery(int page, int size, String query) {
+		PageRequest pageRequest = PageRequest.of(page, size);
+		Page<User> users = userRepository.findByQuery(query, pageRequest);
+		return userMapper.map(users.getContent());
+	}
+	
 	public UserResponse getById(String id) {
 		 User user = userRepository.findById(id)
 				.orElseThrow(() -> new UserNotFoundException("Could not found user with that id"));
@@ -73,7 +79,7 @@ class UserService {
 		String avatarUrl = imageFileService.save(avatarImageFile);
 		user.setAvatarUrl(avatarUrl);
 		
-		User savedUser = userRepository.save(user);
+		User savedUser = userRepository.saveAndFlush(user);
 
 		return userMapper.map(savedUser);
 	}

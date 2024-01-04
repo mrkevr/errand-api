@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,9 +39,16 @@ class UserController {
 	
 	@GetMapping
 	ResponseEntity<ResponseEntityBody> getAll(
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "1000") int size) {
-		List<UserResponse> userResponses = userService.getAll(page, size);
+			@RequestParam(required = false, defaultValue = "0") int page,
+			@RequestParam(required = false, defaultValue = "1000") int size,
+			@RequestParam(required = false) String query) {
+		
+		List<UserResponse> userResponses = null;
+		if (ObjectUtils.isEmpty(query) || query == null) {
+			userResponses = userService.getAll(page, size);
+		} else {
+			userResponses = userService.getAllWithQuery(page, size, query);
+		}
 		
 		String title = "Users";
 		Map<String, Object> body = new HashMap<>();
@@ -51,7 +59,7 @@ class UserController {
 		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.OK, body);
 		return ResponseEntity.ok(responseEntityBody);
 	}
-
+	
 	@GetMapping("/{id}")
 	ResponseEntity<ResponseEntityBody> getById(@PathVariable String id) {
 		UserResponse userResponse = userService.getById(id);
