@@ -23,10 +23,4 @@ public interface UserRepository extends JpaRepository<User, String> {
 	
 	@Query("UPDATE User u SET u.errandsWorked = u.errandsWorked + 1 WHERE u.id = :id")
 	void incrementErrandsWorkedById(String id);
-	
-	@Query("UPDATE User u "
-			+ "SET u.rateScore = u.rateScore + :increaseBy, "
-			+ "u.timesRated = u.timesRated + 1 "
-			+ "WHERE u.id = :id")
-	void rateUserById(String id, int increaseBy);
 }

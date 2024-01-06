@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import dev.mrkevr.errandapi.common.exception.ApiException;
 import dev.mrkevr.errandapi.imagefile.api.ImageFileService;
 import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
 import dev.mrkevr.errandapi.user.dto.UserResponse;
@@ -67,14 +66,6 @@ class UserService {
 	}
 	
 	@Transactional
-	public void rateBUseryId(String id, int increasedBy) {
-		if (increasedBy > 5 && increasedBy < 1) {
-			throw new ApiException("Rating users should be between 0-5");
-		}
-		userRepository.rateUserById(id, increasedBy);
-	}
-	
-	@Transactional
 	public UserResponse add(UserCreationRequest userCreationRequest, MultipartFile avatarImageFile) throws IOException {
 		
 		User user = User.builder()
@@ -85,8 +76,6 @@ class UserService {
 			.phone(userCreationRequest.getPhone())
 			.email(userCreationRequest.getEmail())
 			.aboutMe(userCreationRequest.getAboutMe())
-			.rateScore(0)
-			.timesRated(0)
 			.errandsWorked(0)
 			.build();
 		

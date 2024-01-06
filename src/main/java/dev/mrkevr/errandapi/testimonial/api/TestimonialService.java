@@ -47,12 +47,18 @@ public class TestimonialService {
 		return testimonialMapper.map(testimonial);
 	}
 	
+	public int getAverageRatingByUserId(String userId) {
+		double rating = testimonialRepository.getAverageRatingByUserId(userId);
+		return (int) rating;
+	}
+	
 	@Transactional
 	public TestimonialResponse add(TestimonialCreationRequest testimonialCreationRequest) {
 		
 		Testimonial testimonial = Testimonial.builder()
 				.userId(testimonialCreationRequest.getUserId())
-				.testifierId(testimonialCreationRequest.getTestifierId())
+				.testifierUsername(testimonialCreationRequest.getTestifierUsername())
+				.rating(testimonialCreationRequest.getRating())
 				.content(testimonialCreationRequest.getContent())
 				.build();
 		

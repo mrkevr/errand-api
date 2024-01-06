@@ -52,17 +52,6 @@ public class User extends GenericEntity {
 	@Column(name = "about_me")
 	String aboutMe;
 
-	@Column(name = "rate_score")
-	int rateScore;
-	
-	@Column(name = "times_rated")
-	int timesRated;
-	
 	@Column(name = "errands_worked")
 	int errandsWorked;
-	
-	@Override
-	public String getIdPrefix() {
-		return "USER";
-	}
 }

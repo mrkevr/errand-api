@@ -15,7 +15,8 @@ public class TestimonialMapper {
 		TestimonialResponse response = TestimonialResponse.builder()
 			.id(testimonial.getId())
 			.userId(testimonial.getUserId())
-			.testifierId(testimonial.getTestifierId())
+			.testifierUsername(testimonial.getTestifierUsername())
+			.rating(testimonial.getRating())
 			.content(testimonial.getContent())
 			.posted(testimonial.getCreated())
 			.build();

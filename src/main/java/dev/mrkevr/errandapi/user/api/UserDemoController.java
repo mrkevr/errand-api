@@ -45,11 +45,11 @@ public class UserDemoController {
 		return mav;
 	}
 	
-	@GetMapping("/{id}")
-	ModelAndView displayUser(@PathVariable String id) {
+	@GetMapping("/{username}")
+	ModelAndView displayUser(@PathVariable String username) {
 
-		UserResponse user = userService.getById(id);
-		List<TestimonialResponse> testimonials = testimonialService.getAllByUserId(id);
+		UserResponse user = userService.getByUsername(username);
+		List<TestimonialResponse> testimonials = testimonialService.getAllByUserId(user.getId());
 		
 		ModelAndView mav = new ModelAndView("user-profile");
 		mav.addObject("user", user);

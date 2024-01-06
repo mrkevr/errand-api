@@ -1,6 +1,9 @@
 package dev.mrkevr.errandapi;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -10,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
@@ -47,24 +51,41 @@ public class Application {
 	}
 	
 //	@Bean
+	@Order(value = Ordered.LOWEST_PRECEDENCE)
 	CommandLineRunner runner(){
+		
+	
+		List<String> usernames = userRepository.findAll().stream().map(u -> u.getUsername()).collect(Collectors.toList());
+		Random random = new Random();
+		
 		return args -> userRepository.findAll().forEach(e -> {
+			
+		
+			String testifier1 = usernames.get(random.nextInt(usernames.size()));
+			String testifier2 = usernames.get(random.nextInt(usernames.size()));
+			String testifier3 = usernames.get(random.nextInt(usernames.size()));
+			int rating1 = ThreadLocalRandom.current().nextInt(1, 6);
+			int rating2 = ThreadLocalRandom.current().nextInt(1, 6);
+			int rating3 = ThreadLocalRandom.current().nextInt(1, 6);
 			
 			Testimonial t1 = Testimonial.builder()
 				.userId(e.getId())
-				.testifierId("USER12345681")
+				.testifierUsername(testifier1)
+				.rating(rating1)
 				.content(this.lorem1())
 				.build();
 			
 			Testimonial t2 = Testimonial.builder()
 					.userId(e.getId())
-					.testifierId("USER12345756")
+					.testifierUsername(testifier2)
+					.rating(rating2)
 					.content(this.lorem2())
 					.build();
 			
 			Testimonial t3 = Testimonial.builder()
 					.userId(e.getId())
-					.testifierId("USER12345756")
+					.testifierUsername(testifier3)
+					.rating(rating3)
 					.content(this.lorem3())
 					.build();
 			

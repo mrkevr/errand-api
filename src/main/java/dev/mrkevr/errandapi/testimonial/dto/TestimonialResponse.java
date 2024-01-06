@@ -16,7 +16,9 @@ public class TestimonialResponse {
 	
 	String userId;
 
-	String testifierId;
+	String testifierUsername;
+	
+	int rating;
 
 	String content;
 	

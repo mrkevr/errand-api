@@ -28,15 +28,13 @@ public class Testimonial extends GenericEntity {
 	@Column(name = "user_id")
 	String userId;
 
-	@Column(name = "testifier_id")
-	String testifierId;
+	@Column(name = "testifier_username")
+	String testifierUsername;
+	
+	@Column(name = "rating")
+	int rating;
 
 	@Lob
 	@Column(name = "content")
 	String content;
-
-	@Override
-	public String getIdPrefix() {
-		return "TTML";
-	}
 }

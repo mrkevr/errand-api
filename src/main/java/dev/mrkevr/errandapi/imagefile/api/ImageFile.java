@@ -29,9 +29,4 @@ public class ImageFile extends GenericEntity {
 
 	@Column(name = "file_path")
 	String filePath;
-
-	@Override
-	public String getIdPrefix() {
-		return "IMFL";
-	}
 }

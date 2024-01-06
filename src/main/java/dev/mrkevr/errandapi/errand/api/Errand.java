@@ -60,9 +60,4 @@ public class Errand extends GenericEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "errand_status")
 	ErrandStatus errandStatus;
-	
-	@Override
-	public String getIdPrefix() {
-		return "ERND";
-	}
 }

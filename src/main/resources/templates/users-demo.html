@@ -54,7 +54,7 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${user.name}"></h5>
                         <p class="card-text" th:text="${user.title}"></p>
-                        <a th:href="@{/demo/users/{id}(id=${user.id})}" class="btn btn-outline-primary btn-sm stretched-link">View Profile</a>
+                        <a th:href="@{/demo/users/{username}(username=${user.username})}" class="btn btn-outline-primary btn-sm stretched-link">View Profile</a>
                     </div>
                 </div>
             </div>

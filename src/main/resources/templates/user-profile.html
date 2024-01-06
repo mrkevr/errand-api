@@ -13,7 +13,6 @@
             max-width: 200px;
             border-radius: 50%;
         }
-
         .testimonial-card {
             margin: 20px 0;
         }
@@ -40,10 +39,10 @@
         <!-- User Profile -->
         <div class="col-md-4">
             <div class="card">
-                <img th:src="${user.avatarUrl}" class="card-img-top profile-img" alt="User Avatar">
                 <div class="card-body">
-                    <h3 class="card-title" th:text="${user.name}"></h3>
+                	<img th:src="${user.avatarUrl}" class="card-img-top profile-img" alt="User Avatar">
                     <div>
+                    	<p class="h3 card-title" th:text="${user.name}"></p>
                     	<span th:each="i : ${#numbers.sequence(1, 5)}" th:class="${user.rating >= i} ? 'fa fa-star checked' : 'fa fa-star unchecked'"></span>
                     </div>
                     <h5 th:text="${user.title}"></h5>
@@ -73,13 +72,15 @@
         <div class="col-md-8">
             <h5 class="card-title">Testimonials</h5>
             	
-            	
             	<th:block th:each="t : ${testimonials}">
 		            <div class="card testimonial-card">
 		                <div class="card-body">
 		                    <div class="media">
 		                        <div class="media-body">
-		                            <h6 class="mt-0 text-primary" th:text="${t.testifierId}"></h6>
+		                        	<div>
+		                        		<p><a class="mt-0 text-primary font-weight-bold" th:text="${t.testifierUsername}" th:href="@{/demo/users/{username}(username=${t.testifierUsername})}"></a></p>
+		                        		<span th:each="i : ${#numbers.sequence(1, 5)}" th:class="${t.rating >= i} ? 'fa fa-star checked' : 'fa fa-star unchecked'"></span>
+		                        	</div>
 		                            <p th:text="${t.content}"></p>
 		                            <span class="text-primary float-right" th:text="${#temporals.format(t.posted, 'MMMM dd, yyyy hh:mm a')}" style="font-size: 70%"></span>
 		                        </div>

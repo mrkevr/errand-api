@@ -11,8 +11,14 @@ public class GeneticEntityIdGenerator implements IdentifierGenerator {
 
 	@Override
 	public Object generate(SharedSessionContractImplementor session, Object object) {
-		String prefix = ((GenericEntity) object).getIdPrefix();
-		int randomEightDigitNumber = new SecureRandom().nextInt(90000000) + 10000000;
-		return prefix + String.valueOf(randomEightDigitNumber);
+		long randomTwelveDigitNumber = generateRandomTwelveDigitNumber();
+		return String.valueOf(randomTwelveDigitNumber);
+	}
+
+	private long generateRandomTwelveDigitNumber() {
+		SecureRandom secureRandom = new SecureRandom();
+		long randomTwelveDigitNumber = secureRandom.nextLong();
+		randomTwelveDigitNumber = Math.abs(randomTwelveDigitNumber) % 1_000_000_000_000L; // Ensure 12 digits
+		return randomTwelveDigitNumber;
 	}
 }
