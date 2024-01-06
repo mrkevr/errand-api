@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thyleaf.org">
+<head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fontawesome icons-->
+	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <title>User Profile</title>
+    <style>
+        /* Add your custom styles here */
+        .profile-img {
+            max-width: 200px;
+            border-radius: 50%;
+        }
+
+        .testimonial-card {
+            margin: 20px 0;
+        }
+        .info-container {
+        	align-items: center;
+	    }
+	    .info-container i {
+	        margin-right: 5px; /* Add margin between icon and text */
+	    }
+	    .checked {
+            color: #0275d8;
+        }
+
+        .unchecked {
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row">
+
+        <!-- User Profile -->
+        <div class="col-md-4">
+            <div class="card">
+                <img th:src="${user.avatarUrl}" class="card-img-top profile-img" alt="User Avatar">
+                <div class="card-body">
+                    <h3 class="card-title" th:text="${user.name}"></h3>
+                    <div>
+                    	<span th:each="i : ${#numbers.sequence(1, 5)}" th:class="${user.rating >= i} ? 'fa fa-star checked' : 'fa fa-star unchecked'"></span>
+                    </div>
+                    <h5 th:text="${user.title}"></h5>
+                    <p class="card-text" th:text="${user.aboutMe}"></p>
+                    
+                    <div class="info-container">
+					    <i class="fa-solid fa-envelope text-primary"></i>
+					    <span class="h6" th:text="${user.email}"></span>
+					</div>
+					<div class="info-container">
+					    <i class="fa-solid fa-phone text-primary"></i>
+					    <span class="h6" th:text="${user.phone}"></span>
+					</div>
+					<div class="info-container">
+					    <i class="fa-solid fa-handshake text-primary"></i>
+					    <span class="h6" th:text="${user.errandsWorked}"></span>
+					</div>
+					<div class="info-container">
+					    <i class="fa-solid fa-user-plus text-primary"></i>
+					    <span class="h6" th:text="${#temporals.format(user.joined, 'MMMM yyyy')}"></span>
+					</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonial Section -->
+        <div class="col-md-8">
+            <h5 class="card-title">Testimonials</h5>
+            	
+            	
+            	<th:block th:each="t : ${testimonials}">
+		            <div class="card testimonial-card">
+		                <div class="card-body">
+		                    <div class="media">
+		                        <div class="media-body">
+		                            <h6 class="mt-0 text-primary" th:text="${t.testifierId}"></h6>
+		                            <p th:text="${t.content}"></p>
+		                            <span class="text-primary float-right" th:text="${#temporals.format(t.posted, 'MMMM dd, yyyy hh:mm a')}" style="font-size: 70%"></span>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+	            </th:block>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

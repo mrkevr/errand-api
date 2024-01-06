@@ -19,7 +19,7 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-class TestimonialService {
+public class TestimonialService {
 	
 	TestimonialRepository testimonialRepository;
 	TestimonialMapper testimonialMapper;
@@ -28,6 +28,11 @@ class TestimonialService {
 		PageRequest pageRequest = PageRequest.of(page, size);
 		Page<Testimonial> testimonials = testimonialRepository.findAll(pageRequest);
 		return testimonialMapper.map(testimonials.getContent());
+	}
+	
+	public List<TestimonialResponse> getAllByUserId(String userId) {
+		 List<Testimonial> testimonials = testimonialRepository.findByUserId(userId);
+		return testimonialMapper.map(testimonials);
 	}
 	
 	public List<TestimonialResponse> getAllByUserId(String userId, int page, int size) {

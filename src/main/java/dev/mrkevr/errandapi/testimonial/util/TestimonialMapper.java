@@ -12,13 +12,14 @@ import dev.mrkevr.errandapi.testimonial.dto.TestimonialResponse;
 public class TestimonialMapper {
 
 	public TestimonialResponse map(Testimonial testimonial) {
-		TestimonialResponse.builder()
+		TestimonialResponse response = TestimonialResponse.builder()
 			.id(testimonial.getId())
 			.userId(testimonial.getUserId())
 			.testifierId(testimonial.getTestifierId())
 			.content(testimonial.getContent())
-			.posted(testimonial.getCreated());
-		return null;
+			.posted(testimonial.getCreated())
+			.build();
+		return response;
 	}
 
 	public List<TestimonialResponse> map(List<Testimonial> testimonials) {

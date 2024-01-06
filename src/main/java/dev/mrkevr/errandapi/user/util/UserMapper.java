@@ -21,7 +21,7 @@ public class UserMapper {
 			.aboutMe(user.getAboutMe())
 			.phone(user.getPhone())
 			.email(user.getEmail())
-			.rating(user.getRating())
+				.rating(user.getRateScore() / user.getTimesRated())
 			.errandsWorked(user.getErrandsWorked())
 			.joined(user.getCreated().toLocalDate())
 			.build();

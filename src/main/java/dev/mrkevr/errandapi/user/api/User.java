@@ -3,6 +3,7 @@ package dev.mrkevr.errandapi.user.api;
 import dev.mrkevr.errandapi.common.entity.GenericEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -46,12 +47,16 @@ public class User extends GenericEntity {
 
 	@Column(name = "phone")
 	String phone;
-
+	
+	@Lob
 	@Column(name = "about_me")
 	String aboutMe;
 
-	@Column(name = "rating")
-	int rating;
+	@Column(name = "rate_score")
+	int rateScore;
+	
+	@Column(name = "times_rated")
+	int timesRated;
 	
 	@Column(name = "errands_worked")
 	int errandsWorked;
