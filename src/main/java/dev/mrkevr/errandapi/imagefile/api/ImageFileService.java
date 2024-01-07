@@ -17,20 +17,24 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import dev.mrkevr.errandapi.common.service.ServerService;
 import dev.mrkevr.errandapi.imagefile.exception.ImageFileNotFoundException;
 
 @Component
 @Transactional(readOnly = true)
 public class ImageFileService {
 	
+	@Autowired
+	private ImageFileRepository imageFileRepository;
+	
 	@Value("${file.image.directory}")
 	private String imageDirectory;
 	
 	@Autowired
-	private ImageFileRepository imageFileRepository;
+	private ServerService serverService;
 	
 	private final String BASE_URL = "http://localhost:9001/api/images/";
-	
+		
 	/*
 	 * Accept multipartFile and return its url
 	 */
@@ -52,7 +56,7 @@ public class ImageFileService {
 				.filePath(filePath)
 				.build();
 			imageFileRepository.save(imageFile);
-			return BASE_URL + fileName;
+			return serverService.getBaseUri().concat("/images/").concat(fileName);
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}

@@ -1,6 +1,7 @@
 package dev.mrkevr.errandapi.testimonial.api;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,5 +18,5 @@ public interface TestimonialRepository extends JpaRepository<Testimonial, String
 	List<Testimonial> findByUserId(@Param("userId") String userId);
 	
 	@Query("SELECT AVG(t.rating) FROM Testimonial t WHERE t.userId = :userId")
-	double getAverageRatingByUserId(String userId);
+	Optional<Double> getAverageRatingByUserId(String userId);
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import dev.mrkevr.errandapi.common.dto.ResponseEntityBody;
+import dev.mrkevr.errandapi.common.service.ServerService;
 import dev.mrkevr.errandapi.common.validator.ValidImageFile;
 import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
 import dev.mrkevr.errandapi.user.dto.UserResponse;
@@ -30,12 +31,13 @@ import lombok.experimental.FieldDefaults;
 
 @Validated
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 class UserController {
 	
 	UserService userService;
+	ServerService serverService;
 	
 	@GetMapping
 	ResponseEntity<ResponseEntityBody> getAll(
@@ -76,7 +78,7 @@ class UserController {
 		
 		UserResponse userResponse = userService.add(userCreationRequest, avatarImageFile);
 		String title = "User created successfully";
-		String uri = "/api/users/" + userResponse.getId();
+		String uri = serverService.getBaseUri().concat("/users/") + userResponse.getId();
 		
 		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.CREATED, userResponse);
 		return ResponseEntity.created(URI.create(uri)).body(responseEntityBody);

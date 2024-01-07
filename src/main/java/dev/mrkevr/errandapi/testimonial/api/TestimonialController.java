@@ -25,7 +25,7 @@ import lombok.experimental.FieldDefaults;
 
 
 @RestController
-@RequestMapping("/api/testimonials")
+@RequestMapping("/testimonials")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 class TestimonialController {

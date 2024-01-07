@@ -1,6 +1,7 @@
 package dev.mrkevr.errandapi.testimonial.api;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,8 +49,9 @@ public class TestimonialService {
 	}
 	
 	public int getAverageRatingByUserId(String userId) {
-		double rating = testimonialRepository.getAverageRatingByUserId(userId);
-		return (int) rating;
+		Optional<Double> optional = testimonialRepository.getAverageRatingByUserId(userId);
+		
+		return optional.isPresent() ? optional.get().intValue() : 0;
 	}
 	
 	@Transactional
