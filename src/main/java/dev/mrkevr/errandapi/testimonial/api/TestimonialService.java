@@ -12,6 +12,7 @@ import dev.mrkevr.errandapi.testimonial.dto.TestimonialCreationRequest;
 import dev.mrkevr.errandapi.testimonial.dto.TestimonialResponse;
 import dev.mrkevr.errandapi.testimonial.exception.TestimonialNotFoundException;
 import dev.mrkevr.errandapi.testimonial.util.TestimonialMapper;
+import dev.mrkevr.errandapi.user.api.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +25,7 @@ public class TestimonialService {
 	
 	TestimonialRepository testimonialRepository;
 	TestimonialMapper testimonialMapper;
+	UserService userService;
 	
 	public List<TestimonialResponse> getAll(int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size);
@@ -57,14 +59,39 @@ public class TestimonialService {
 	@Transactional
 	public TestimonialResponse add(TestimonialCreationRequest testimonialCreationRequest) {
 		
-		Testimonial testimonial = Testimonial.builder()
-				.userId(testimonialCreationRequest.getUserId())
-				.testifierUsername(testimonialCreationRequest.getTestifierUsername())
-				.rating(testimonialCreationRequest.getRating())
-				.content(testimonialCreationRequest.getContent())
-				.build();
+		/*
+		 * Check if an existing Testimonial exists, User can only have one Testimonial for every User
+		 */
+		Optional<Testimonial> optionalTestmonial = testimonialRepository.findByUserIdAndTestifierUsername(
+				testimonialCreationRequest.getUserId(), 
+				testimonialCreationRequest.getTestifierUsername());
 		
-		Testimonial savedTestimonial = testimonialRepository.save(testimonial);
+		Testimonial savedTestimonial = null;
+		/*
+		 * Update Testimonial if it exists, else create new
+		 */
+		if (optionalTestmonial.isPresent()) {
+			Testimonial testimonialToUpdate = optionalTestmonial.get();
+			testimonialToUpdate.setRating(testimonialCreationRequest.getRating());
+			testimonialToUpdate.setContent(testimonialCreationRequest.getContent());
+			
+			savedTestimonial = testimonialRepository.save(testimonialToUpdate);
+		} else {
+			Testimonial testimonialToSave = Testimonial.builder()
+					.userId(testimonialCreationRequest.getUserId())
+					.testifierUsername(testimonialCreationRequest.getTestifierUsername())
+					.rating(testimonialCreationRequest.getRating())
+					.content(testimonialCreationRequest.getContent())
+					.build();
+			
+			savedTestimonial = testimonialRepository.save(testimonialToSave);
+		}
+		
+		// Update the User's average rating
+		Optional<Double> averageRatingByUserId = testimonialRepository.getAverageRatingByUserId(savedTestimonial.getUserId());
+		int newAverageRating = averageRatingByUserId.get().intValue();
+		userService.updateAverageRating(savedTestimonial.getUserId(), newAverageRating);
+		
 		return testimonialMapper.map(savedTestimonial);
 	}
 }

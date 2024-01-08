@@ -21,6 +21,8 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import dev.mrkevr.errandapi.common.service.ServerService;
 import dev.mrkevr.errandapi.testimonial.api.Testimonial;
 import dev.mrkevr.errandapi.testimonial.api.TestimonialRepository;
+import dev.mrkevr.errandapi.testimonial.api.TestimonialService;
+import dev.mrkevr.errandapi.testimonial.dto.TestimonialCreationRequest;
 import dev.mrkevr.errandapi.user.api.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ import lombok.experimental.FieldDefaults;
 public class DevProfileConfig {
 
 	TestimonialRepository testimonialRepository;
+	TestimonialService testimonialService;
 	UserRepository userRepository;
 	ServerService serverService;
 	
@@ -73,28 +76,31 @@ public class DevProfileConfig {
 			int rating2 = ThreadLocalRandom.current().nextInt(1, 6);
 			int rating3 = ThreadLocalRandom.current().nextInt(1, 6);
 			
-			Testimonial t1 = Testimonial.builder()
+			TestimonialCreationRequest t1 = TestimonialCreationRequest.builder()
 				.userId(e.getId())
 				.testifierUsername(testifier1)
 				.rating(rating1)
 				.content(this.getLoremIpsum())
 				.build();
 			
-			Testimonial t2 = Testimonial.builder()
+			TestimonialCreationRequest t2 = TestimonialCreationRequest.builder()
 					.userId(e.getId())
 					.testifierUsername(testifier2)
 					.rating(rating2)
 					.content(this.getLoremIpsum())
 					.build();
 			
-			Testimonial t3 = Testimonial.builder()
+			TestimonialCreationRequest t3 = TestimonialCreationRequest.builder()
 					.userId(e.getId())
 					.testifierUsername(testifier3)
 					.rating(rating3)
 					.content(this.getLoremIpsum())
 					.build();
 			
-			testimonialRepository.saveAll(List.of(t1, t2, t3));
+			
+			testimonialService.add(t1);
+			testimonialService.add(t2);
+			testimonialService.add(t3);
 		});
 	}
 	

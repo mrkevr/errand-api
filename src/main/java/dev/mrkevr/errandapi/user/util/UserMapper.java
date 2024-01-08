@@ -3,10 +3,11 @@ package dev.mrkevr.errandapi.user.util;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import dev.mrkevr.errandapi.testimonial.api.TestimonialService;
 import dev.mrkevr.errandapi.user.api.User;
+import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
 import dev.mrkevr.errandapi.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +15,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserMapper {
 	
-	private final TestimonialService testimonialService;
+	private final PasswordEncoder passwordEncoder;
+	
+	/*
+	 * Create a new User from UserCreationRequest's values
+	 */
+	public User map(UserCreationRequest userCreationRequest) {
+		User user = User.builder()
+			.username(userCreationRequest.getUsername())
+			.password(passwordEncoder.encode(userCreationRequest.getPassword()))
+			.name(userCreationRequest.getName())
+			.title(userCreationRequest.getTitle())
+			.phone(userCreationRequest.getPhone())
+			.email(userCreationRequest.getEmail())
+			.aboutMe(userCreationRequest.getAboutMe())
+			.errandsWorked(0)
+			.averageRating(0)
+			.build();
+		return user;
+	}
 	
 	public UserResponse map(User user) {
 		return UserResponse.builder()
@@ -24,7 +43,7 @@ public class UserMapper {
 			.title(user.getTitle())
 			.avatarUrl(user.getAvatarUrl())
 			.aboutMe(user.getAboutMe())
-			.rating(testimonialService.getAverageRatingByUserId(user.getId()))
+			.averageRating(user.getAverageRating())
 			.phone(user.getPhone())
 			.email(user.getEmail())
 			.errandsWorked(user.getErrandsWorked())

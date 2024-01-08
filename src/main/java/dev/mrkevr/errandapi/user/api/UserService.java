@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import dev.mrkevr.errandapi.common.exception.ApiException;
 import dev.mrkevr.errandapi.imagefile.api.ImageFileService;
 import dev.mrkevr.errandapi.user.dto.UserCreationRequest;
 import dev.mrkevr.errandapi.user.dto.UserResponse;
@@ -23,11 +23,10 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-class UserService {
+public class UserService {
 
 	UserRepository userRepository;
 	UserMapper userMapper;
-	PasswordEncoder passwordEncoder;
 	ImageFileService imageFileService;
 
 	public List<UserResponse> getAll(int page, int size) {
@@ -68,23 +67,23 @@ class UserService {
 	@Transactional
 	public UserResponse add(UserCreationRequest userCreationRequest, MultipartFile avatarImageFile) throws IOException {
 		
-		User user = User.builder()
-			.username(userCreationRequest.getUsername())
-			.password(passwordEncoder.encode(userCreationRequest.getPassword()))
-			.name(userCreationRequest.getName())
-			.title(userCreationRequest.getTitle())
-			.phone(userCreationRequest.getPhone())
-			.email(userCreationRequest.getEmail())
-			.aboutMe(userCreationRequest.getAboutMe())
-			.errandsWorked(0)
-			.build();
+		User user = userMapper.map(userCreationRequest);
 		
 		// Save the image file and save the image url to user
 		String avatarUrl = imageFileService.save(avatarImageFile);
 		user.setAvatarUrl(avatarUrl);
 		
+		
 		User savedUser = userRepository.saveAndFlush(user);
-
 		return userMapper.map(savedUser);
+	}
+	
+	@Transactional
+	public boolean updateAverageRating(String id, int newRating) {
+		int updated = userRepository.updateAverageRatingById(id, newRating);
+		if (updated == 0) {
+			throw new ApiException("Updating averate rating failed");
+		}
+		return true;
 	}
 }

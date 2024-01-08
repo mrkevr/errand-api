@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<User, String> {
@@ -21,6 +22,11 @@ public interface UserRepository extends JpaRepository<User, String> {
 
 	boolean existsByUsername(String username);
 	
+	@Modifying
 	@Query("UPDATE User u SET u.errandsWorked = u.errandsWorked + 1 WHERE u.id = :id")
-	void incrementErrandsWorkedById(String id);
+	int incrementErrandsWorkedById(String id);
+	
+	@Modifying
+	@Query("UPDATE User u SET u.averageRating = :newAverageRating WHERE u.id = :id")
+	int updateAverageRatingById(String id, int newAverageRating);
 }

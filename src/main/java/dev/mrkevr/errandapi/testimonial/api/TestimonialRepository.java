@@ -19,4 +19,10 @@ public interface TestimonialRepository extends JpaRepository<Testimonial, String
 	
 	@Query("SELECT AVG(t.rating) FROM Testimonial t WHERE t.userId = :userId")
 	Optional<Double> getAverageRatingByUserId(String userId);
+	
+	@Query("SELECT COUNT(t.userId) FROM Testimonial t WHERE t.userId = :userId")
+	long countByUserId(String userId);
+	
+	@Query("SELECT t FROM Testimonial t WHERE t.userId = :userId AND t.testifierUsername = :testifierUsername")
+	Optional<Testimonial> findByUserIdAndTestifierUsername(String userId, String testifierUsername);
 }

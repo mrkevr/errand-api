@@ -28,7 +28,7 @@ public class UserResponse {
 
 	String aboutMe;
 
-	int rating;
+	int averageRating;
 	
 	int errandsWorked;
 

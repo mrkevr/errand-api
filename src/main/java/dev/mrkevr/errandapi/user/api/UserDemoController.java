@@ -41,7 +41,6 @@ public class UserDemoController {
 
 		ModelAndView mav = new ModelAndView("users-demo");
 		mav.addObject("users", userResponses);
-
 		return mav;
 	}
 	
@@ -56,5 +55,4 @@ public class UserDemoController {
 		mav.addObject("testimonials", testimonials);
 		return mav;
 	}
-
 }

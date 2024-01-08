@@ -43,7 +43,7 @@
                 	<img th:src="${user.avatarUrl}" class="card-img-top profile-img" alt="User Avatar">
                     <div>
                     	<p class="h3 card-title" th:text="${user.name}"></p>
-                    	<span th:each="i : ${#numbers.sequence(1, 5)}" th:class="${user.rating >= i} ? 'fa fa-star checked' : 'fa fa-star unchecked'"></span>
+                    	<span th:each="i : ${#numbers.sequence(1, 5)}" th:class="${user.averageRating >= i} ? 'fa fa-star checked' : 'fa fa-star unchecked'"></span>
                     </div>
                     <h5 th:text="${user.title}"></h5>
                     <p class="card-text" th:text="${user.aboutMe}"></p>

@@ -54,4 +54,7 @@ public class User extends GenericEntity {
 
 	@Column(name = "errands_worked")
 	int errandsWorked;
+	
+	@Column(name = "average_rating")
+	int averageRating;
 }
