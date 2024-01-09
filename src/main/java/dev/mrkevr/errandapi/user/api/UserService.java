@@ -65,14 +65,15 @@ public class UserService {
 	}
 	
 	@Transactional
-	public UserResponse add(UserCreationRequest userCreationRequest, MultipartFile avatarImageFile) throws IOException {
+	public UserResponse add(
+			UserCreationRequest userCreationRequest, 
+			MultipartFile avatarImageFile) throws IOException {
 		
 		User user = userMapper.map(userCreationRequest);
 		
 		// Save the image file and save the image url to user
 		String avatarUrl = imageFileService.save(avatarImageFile);
 		user.setAvatarUrl(avatarUrl);
-		
 		
 		User savedUser = userRepository.saveAndFlush(user);
 		return userMapper.map(savedUser);

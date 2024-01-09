@@ -21,13 +21,15 @@ public class ErrandResponse {
 
 	String id;
 
-	String userId;
+	String employerId;
+	
+	String agentId;
 
 	String title;
 
 	String description;
 
-	String image;
+	String imageUrl;
 
 	ErrandCategory errandCategory;
 

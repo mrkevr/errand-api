@@ -29,9 +29,14 @@ import lombok.experimental.FieldDefaults;
 public class Errand extends GenericEntity {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	// User id of the one who posted the errand
 	@Column(name = "user_id")
-	String userId;
+	String employerId;
+
+	// User id of the one who is running the errand, initial value is null
+	@Column(name = "agent_id")
+	String agentId;
 
 	@Column(name = "title")
 	String title;
@@ -40,8 +45,8 @@ public class Errand extends GenericEntity {
 	@Column(name = "description")
 	String description;
 	
-	@Column(name = "image")
-	String image;
+	@Column(name = "image_url")
+	String imageUrl;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "errand_category")

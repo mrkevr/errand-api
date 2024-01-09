@@ -19,7 +19,6 @@ import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import dev.mrkevr.errandapi.common.service.ServerService;
-import dev.mrkevr.errandapi.testimonial.api.Testimonial;
 import dev.mrkevr.errandapi.testimonial.api.TestimonialRepository;
 import dev.mrkevr.errandapi.testimonial.api.TestimonialService;
 import dev.mrkevr.errandapi.testimonial.dto.TestimonialCreationRequest;
@@ -55,10 +54,12 @@ public class DevProfileConfig {
 	    return dataSourceInitializer;
 	}
 	
+	
+	
 	/*
 	 * Mock Testimonials
 	 */
-	@Bean
+//	@Bean
 	@Order(value = Ordered.LOWEST_PRECEDENCE)
 	CommandLineRunner runner(){
 		

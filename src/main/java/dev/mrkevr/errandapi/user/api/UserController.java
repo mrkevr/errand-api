@@ -73,7 +73,7 @@ class UserController {
 	
 	@PostMapping
 	ResponseEntity<ResponseEntityBody> save(
-			@Valid @RequestPart(name = "creationRequest") UserCreationRequest userCreationRequest,
+			@Valid @RequestPart(name = "userCreationRequest") UserCreationRequest userCreationRequest,
 			@Valid @ValidImageFile @RequestParam(name = "avatarImageFile", required = true) MultipartFile avatarImageFile) throws IOException {
 		
 		UserResponse userResponse = userService.add(userCreationRequest, avatarImageFile);

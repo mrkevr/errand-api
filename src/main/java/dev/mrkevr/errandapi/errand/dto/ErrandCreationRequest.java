@@ -17,9 +17,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ErrandCreationRequest {
 
-	@NotEmpty(message = "Field `userId` must not be empty")
-	@Size(min = 10, max = 12, message = "Field `userId` must be 10-12 chatacters")
-	String userId;
+	@NotEmpty(message = "Field `employerId` must not be empty")
+	@Size(min = 10, max = 12, message = "Field `employerId` must be 10-12 chatacters")
+	String employerId;
 
 	@NotEmpty(message = "Field `title` must not be empty")
 	@Size(min = 6, max = 120, message = "Field `title` must be 6-120 chatacters")
@@ -38,9 +38,6 @@ public class ErrandCreationRequest {
 
 	@NotNull(message = "Field `compensation` must not be null")
 	@Positive(message = "Field `compensation` must be greater than 0")
-	@DecimalMax(value = "1000000.00", message = "Field `compensation` must be greater than P1,000,000.00")
+	@DecimalMax(value = "1000000.00", message = "Field `compensation` must not be greater than P1,000,000.00")
 	double compensation;
-
-	@NotNull(message = "Field `errandStatus` must not be null")
-	ErrandStatus errandStatus;
 }

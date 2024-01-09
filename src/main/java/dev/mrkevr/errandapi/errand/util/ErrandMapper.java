@@ -6,20 +6,38 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import dev.mrkevr.errandapi.errand.api.Errand;
+import dev.mrkevr.errandapi.errand.api.ErrandStatus;
+import dev.mrkevr.errandapi.errand.dto.ErrandCreationRequest;
 import dev.mrkevr.errandapi.errand.dto.ErrandResponse;
 
 @Component
 public class ErrandMapper {
 	
-	private final String BASE_URL = "http://localhost:9001/api/errands/";
+	/*
+	 * Create a new Errand from ErrandCreationRequest's values
+	 */
+	public Errand map(ErrandCreationRequest errandCreationRequest) {
+		Errand errand = Errand.builder()
+			.employerId(errandCreationRequest.getEmployerId())
+			.title(errandCreationRequest.getTitle())
+			.description(errandCreationRequest.getDescription())
+			.errandLocation(errandCreationRequest.getErrandLocation())
+			.compensation(errandCreationRequest.getCompensation())
+			.errandCategory(errandCreationRequest.getErrandCategory())
+			.errandStatus(ErrandStatus.VACANT)
+			.build();
+		
+		return errand;
+	}
 	
 	public ErrandResponse map(Errand errand) {
 		return ErrandResponse.builder()
 			.id(errand.getId())
-			.userId(errand.getUserId())
+			.employerId(errand.getEmployerId())
+			.agentId(errand.getAgentId())
 			.title(errand.getTitle())
 			.description(errand.getDescription())
-			.image(BASE_URL + errand.getId() + "/image")
+			.imageUrl(errand.getImageUrl())
 			.errandCategory(errand.getErrandCategory())
 			.compensation(errand.getCompensation())
 			.errandStatus(errand.getErrandStatus())
