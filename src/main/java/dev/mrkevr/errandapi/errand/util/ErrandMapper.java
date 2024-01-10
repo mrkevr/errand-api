@@ -17,6 +17,7 @@ public class ErrandMapper {
 	 * Create a new Errand from ErrandCreationRequest's values
 	 */
 	public Errand map(ErrandCreationRequest errandCreationRequest) {
+		
 		Errand errand = Errand.builder()
 			.employerId(errandCreationRequest.getEmployerId())
 			.title(errandCreationRequest.getTitle())
@@ -26,6 +27,8 @@ public class ErrandMapper {
 			.errandCategory(errandCreationRequest.getErrandCategory())
 			.errandStatus(ErrandStatus.VACANT)
 			.build();
+		
+		System.out.println(errand);
 		
 		return errand;
 	}
@@ -38,6 +41,7 @@ public class ErrandMapper {
 			.title(errand.getTitle())
 			.description(errand.getDescription())
 			.imageUrl(errand.getImageUrl())
+			.errandLocation(errand.getErrandLocation())
 			.errandCategory(errand.getErrandCategory())
 			.compensation(errand.getCompensation())
 			.errandStatus(errand.getErrandStatus())

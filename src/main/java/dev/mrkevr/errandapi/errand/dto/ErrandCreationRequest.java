@@ -2,7 +2,6 @@ package dev.mrkevr.errandapi.errand.dto;
 
 import dev.mrkevr.errandapi.errand.api.ErrandCategory;
 import dev.mrkevr.errandapi.errand.api.ErrandLocation;
-import dev.mrkevr.errandapi.errand.api.ErrandStatus;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotEmpty;

@@ -44,10 +44,23 @@ public class DevProfileConfig {
 	/*
 	 * Mock Users
 	 */
-	@Bean
-	DataSourceInitializer dataSourceInitializer(@Qualifier("dataSource") final DataSource dataSource) {
+//	@Bean
+	DataSourceInitializer dataSourceInitializer_User(@Qualifier("dataSource") final DataSource dataSource) {
 	    ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
 	    resourceDatabasePopulator.addScript(new ClassPathResource("/sql/mock_users_1000.sql"));
+	    DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
+	    dataSourceInitializer.setDataSource(dataSource);
+	    dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
+	    return dataSourceInitializer;
+	}
+	
+	/*
+	 * Mock Errands
+	 */
+	@Bean
+	DataSourceInitializer dataSourceInitializer_Errands(@Qualifier("dataSource") final DataSource dataSource) {
+	    ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
+	    resourceDatabasePopulator.addScript(new ClassPathResource("/sql/mock_errands_1000.sql"));
 	    DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
 	    dataSourceInitializer.setDataSource(dataSource);
 	    dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);

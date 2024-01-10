@@ -16,11 +16,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -31,7 +33,7 @@ public class Errand extends GenericEntity {
 	private static final long serialVersionUID = 1L;
 	
 	// User id of the one who posted the errand
-	@Column(name = "user_id")
+	@Column(name = "employer_id")
 	String employerId;
 
 	// User id of the one who is running the errand, initial value is null
