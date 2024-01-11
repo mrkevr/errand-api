@@ -20,15 +20,19 @@ import lombok.experimental.FieldDefaults;
 public class ValidImageFileValidator implements ConstraintValidator<ValidImageFile, MultipartFile> {
 
 	List<String> allowedFileFormats;
-	int allowedWidth;
-	int allowedHeight;
+	int minWidth;
+	int minHeight;
+	int maxWidth;
+	int maxHeight;
 	long maxFileSize;
 
 	@Override
 	public void initialize(ValidImageFile constraintAnnotation) {
 		allowedFileFormats = Arrays.asList(constraintAnnotation.value());
-		allowedWidth = constraintAnnotation.width();
-		allowedHeight = constraintAnnotation.height();
+		minWidth = constraintAnnotation.minWidth();
+		minHeight = constraintAnnotation.minHeight();
+		maxWidth = constraintAnnotation.maxWidth();
+		maxHeight = constraintAnnotation.maxHeight();
 		maxFileSize = constraintAnnotation.size();
 	}
 
@@ -43,7 +47,10 @@ public class ValidImageFileValidator implements ConstraintValidator<ValidImageFi
 			BufferedImage bufferedImage = ImageIO.read(value.getInputStream());
 			int width = bufferedImage.getWidth();
 			int height = bufferedImage.getHeight();
-			if (width != allowedWidth && height != allowedHeight) {
+			if (width < minWidth || width > maxWidth) {
+				return false;
+			}
+			if (height < minHeight || height > maxHeight) {
 				return false;
 			}
 		} catch (IOException e) {

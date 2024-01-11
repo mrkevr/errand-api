@@ -1,24 +1,24 @@
 package dev.mrkevr.errandapi.errand.api;
 
+import static dev.mrkevr.errandapi.errand.api.ErrandSpecifications.addSpecificationIfNotNullOrEmpty;
+
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import dev.mrkevr.errandapi.common.exception.ApiException;
+import dev.mrkevr.errandapi.common.util.NullOrEmptyChecker;
 import dev.mrkevr.errandapi.errand.dto.ErrandCreationRequest;
 import dev.mrkevr.errandapi.errand.dto.ErrandResponse;
+import dev.mrkevr.errandapi.errand.exception.ErrandNotFoundException;
 import dev.mrkevr.errandapi.errand.util.ErrandMapper;
 import dev.mrkevr.errandapi.imagefile.api.ImageFileService;
-import jakarta.persistence.criteria.Predicate;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -32,6 +32,16 @@ public class ErrandService {
 	ErrandMapper errandMapper;
 	ImageFileService imageFileService;
 	ErrandRepository errandRepository;
+	
+	public List<ErrandResponse> getAll() {
+		List<Errand> errands = errandRepository.findAll();
+		return errandMapper.map(errands);
+	}
+
+	public ErrandResponse getById(String id) {
+		Errand errand = errandRepository.findById(id).orElseThrow(ErrandNotFoundException::new);
+		return errandMapper.map(errand);
+	}
 	
 	public ErrandResponse add(
 			ErrandCreationRequest errandCreationRequest,
@@ -57,34 +67,32 @@ public class ErrandService {
 			String keyword, 
 			List<ErrandCategory> errandCategories, 
 			Integer days, 
-			List<ErrandStatus> errandStatuses) {
+			List<ErrandStatus> errandStatuses,
+			Double minCompensation,
+			Double maxCompensation) {
 		
-		// Atleast one must not be empty/null, else return exception
-		if (!StringUtils.hasText(keyword) && Objects.isNull(errandCategories) && Objects.isNull(days) && Objects.isNull(errandStatuses)) {
-			throw new ApiException("Search queries are all empty/null");
+		// At least one must not be empty/null, else return exception
+		if (NullOrEmptyChecker.allNullOrEmpty(keyword, errandCategories, days, errandStatuses, minCompensation, maxCompensation)) {
+			throw new ApiException("Search values are all empty/null");
 		}
 		
 		// Initialize specifications
 		Specification<Errand> specifications  = Specification.where(null);
 		// Add category filter
-		if (errandCategories != null && !errandCategories.isEmpty()) {
-			specifications = specifications.and(ErrandSpecifications.hasErrandCategory(errandCategories));
-		}
-		// Add keyword filter
-		if (StringUtils.hasText(keyword)) {
-			specifications = specifications.and(ErrandSpecifications.hasKeyword(keyword));
-		}
-		// Add days last posted filter
-		if (!Objects.isNull(days)) {
-			specifications = specifications.and(ErrandSpecifications.postedLastNDays(days));
-		}
-		// Add status filter
-		if (errandStatuses != null && !errandStatuses.isEmpty()) {
-			specifications = specifications.and(ErrandSpecifications.hasErrandStatus(errandStatuses));
-		}
+		specifications = addSpecificationIfNotNullOrEmpty(specifications, errandCategories, ErrandSpecifications::hasErrandCategory);
+	    // Add keyword filter
+		specifications = addSpecificationIfNotNullOrEmpty(specifications, keyword, ErrandSpecifications::hasKeyword);
+	    // Add days last posted filter
+		specifications = addSpecificationIfNotNullOrEmpty(specifications, days, ErrandSpecifications::postedLastNDays);
+	    // Add status filter
+		specifications = addSpecificationIfNotNullOrEmpty(specifications, errandStatuses, ErrandSpecifications::hasErrandStatus);
+	    // Add compensation range filters
+		specifications = addSpecificationIfNotNullOrEmpty(specifications, minCompensation, ErrandSpecifications::hasCompensationGreaterThanOrEqualTo);
+		specifications = addSpecificationIfNotNullOrEmpty(specifications, maxCompensation, ErrandSpecifications::hasCompensationLessThanOrEqualTo);
 		
-		List<Errand> errands = errandRepository.findAll(specifications);
-		
+	    // Find all the errands using all the specifications
+	    List<Errand> errands = errandRepository.findAll(specifications);
+	    // Map to response object and return
 		return errandMapper.map(errands);
 	}
 }

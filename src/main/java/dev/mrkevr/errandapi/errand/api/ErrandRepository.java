@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ErrandRepository extends JpaRepository<Errand, String>, JpaSpecificationExecutor<Errand> {
 
-	List<Errand> findByEmployerId(String employerId, Pageable pageable);
+	List<Errand> findByEmployerUsername(String employerUsername, Pageable pageable);
 
-	@Query("SELECT e FROM Errand e WHERE e.employerId = :employerId AND e.errandStatus = :errandStatus")
-	List<Errand> findByEmployerIdAndErrandStatus(String employerId, ErrandStatus errandStatus, Pageable pageable);
+	@Query("SELECT e FROM Errand e WHERE e.employerUsername = :employerUsername AND e.errandStatus = :errandStatus")
+	List<Errand> findByEmployerIdAndErrandStatus(String employerUsername, ErrandStatus errandStatus, Pageable pageable);
 }

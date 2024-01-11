@@ -19,7 +19,7 @@ public class ErrandMapper {
 	public Errand map(ErrandCreationRequest errandCreationRequest) {
 		
 		Errand errand = Errand.builder()
-			.employerId(errandCreationRequest.getEmployerId())
+			.employerUsername(errandCreationRequest.getEmployerUsername())
 			.title(errandCreationRequest.getTitle())
 			.description(errandCreationRequest.getDescription())
 			.errandLocation(errandCreationRequest.getErrandLocation())
@@ -36,8 +36,8 @@ public class ErrandMapper {
 	public ErrandResponse map(Errand errand) {
 		return ErrandResponse.builder()
 			.id(errand.getId())
-			.employerId(errand.getEmployerId())
-			.agentId(errand.getAgentId())
+			.employerUsername(errand.getEmployerUsername())
+			.agentUsername(errand.getAgentUsername())
 			.title(errand.getTitle())
 			.description(errand.getDescription())
 			.imageUrl(errand.getImageUrl())

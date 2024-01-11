@@ -33,12 +33,12 @@ public class Errand extends GenericEntity {
 	private static final long serialVersionUID = 1L;
 	
 	// User id of the one who posted the errand
-	@Column(name = "employer_id")
-	String employerId;
+	@Column(name = "employer_username")
+	String employerUsername;
 
 	// User id of the one who is running the errand, initial value is null
-	@Column(name = "agent_id")
-	String agentId;
+	@Column(name = "agent_username")
+	String agentUsername;
 
 	@Column(name = "title")
 	String title;

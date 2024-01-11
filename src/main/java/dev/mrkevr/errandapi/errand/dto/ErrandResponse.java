@@ -21,9 +21,9 @@ public class ErrandResponse {
 
 	String id;
 
-	String employerId;
+	String employerUsername;
 	
-	String agentId;
+	String agentUsername;
 
 	String title;
 

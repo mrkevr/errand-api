@@ -2,15 +2,11 @@ package dev.mrkevr.errandapi.errand.api;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,17 +42,19 @@ public class ErrandController {
 			@RequestPart(name = "errandCreationRequest") 
 			ErrandCreationRequest errandCreationRequest,
 			@Valid 
-			@ValidImageFile(width = 500, height = 500, message = "Please upload a valid image file(png/jpg, 50kb or less, 500x500px)") 
+			@ValidImageFile(
+					minWidth = 300, 
+					maxWidth = 500, 
+					minHeight = 300,
+					maxHeight = 500,
+					message = "Please upload a valid image file(png/jpg, 100kb or less, 300-500x300-500px)") 
 			@RequestParam(name = "errandImageFile", required = true) 
 			MultipartFile errandImageFile) throws IOException {
 		
-		System.out.println(errandCreationRequest);
 		
 		ErrandResponse errandResponse = errandService.add(errandCreationRequest, errandImageFile);
-		String title = "Errand posted successfully";
 		String uri = serverService.getBaseUri().concat("/errands/") + errandResponse.getId();
-		
-		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.CREATED, errandResponse);
+		ResponseEntityBody responseEntityBody = ResponseEntityBody.of("Errand created successfully", HttpStatus.CREATED, errandResponse);
 		
 		return ResponseEntity.created(URI.create(uri)).body(responseEntityBody);
 	}
@@ -67,14 +65,10 @@ public class ErrandController {
 			@RequestParam(required = false, defaultValue = "1000") int size) {
 		
 		List<ErrandResponse> errands = errandService.getAll(page, size);
+		ResponseEntityBody responseEntityBody = ResponseEntityBody.of("Errands", HttpStatus.OK, errands);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Total-Count", String.valueOf(errands.size()));
 		
-		String title = "Errands";
-		Map<String, Object> body = new HashMap<>();
-		body.put("page", page);
-		body.put("size", size);
-		body.put("errands", errands);
-		
-		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.OK, body);
 		return ResponseEntity.ok(responseEntityBody);
 	}
 	
@@ -83,21 +77,18 @@ public class ErrandController {
 			@RequestParam(required = false) String keyword, 
 			@RequestParam(required = false) List<ErrandCategory> errandCategories,
 			@RequestParam(required = false) Integer days,
-			@RequestParam(required = false) List<ErrandStatus> errandStatuses) {
+			@RequestParam(required = false) List<ErrandStatus> errandStatuses, 
+			@RequestParam(required = false) Double minCompensation,
+			@RequestParam(required = false) Double maxCompensation) {
 		
-		List<ErrandResponse> errands = errandService.searchBySpecifications(keyword, errandCategories, days, errandStatuses);
+		List<ErrandResponse> errands = errandService.searchBySpecifications(
+				keyword, errandCategories, days,
+				errandStatuses, minCompensation, maxCompensation);
 		
-		String title = "Errands Search";
-		Map<String, Object> body = new HashMap<>();
-		body.put("keyword", StringUtils.hasText(keyword) ? keyword : "null");
-		body.put("errandCategories", ObjectUtils.isEmpty(errandCategories) ? "null" : errandCategories);
-		body.put("errandStatus", ObjectUtils.isEmpty(errandStatuses) ? "null" : errandStatuses);
-		body.put("last posted in days", Objects.isNull(days) ? "null" : days);
-		body.put("found", errands.size());
-		body.put("errands", errands);
+		ResponseEntityBody responseEntityBody = ResponseEntityBody.of("Errands Search", HttpStatus.OK, errands);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Total-Count", String.valueOf(errands.size()));
 		
-		
-		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.OK, body);
-		return ResponseEntity.ok(responseEntityBody);
+		return new ResponseEntity<ResponseEntityBody>(responseEntityBody, headers, HttpStatus.OK);
 	}
 }

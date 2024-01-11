@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thyleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Errand Details</title>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title" th:text="${errand.title}"></h5>
+                    </div>
+                    <img th:src="${errand.imageUrl}" class="card-img-top p-3 img-fluid"
+                        alt="Errand Image">
+                    <div class="card-body">
+                        <p class="card-text" th:text="${errand.description}"></p>
+                        <p class="card-text"><strong>Posted: </strong><span th:text="${errand.posted}"></span></p>
+                        <p class="card-text"><strong>Category: </strong><span th:text="${errand.errandCategory}"></span></p>
+                        <p class="card-text"><strong>Employer: </strong><a th:text="${errand.employerUsername}" th:href="@{/demo/users/{username}(username=${errand.employerUsername})}"></a></p>
+                        <p class="card-text"><strong>Status: </strong><span th:text="${errand.errandStatus}"></span></p>
+                        <button class="btn btn-outline-primary">Apply</button>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-text"><strong>Address: </strong><span th:text="${errand.errandLocation.address}"></span></p>
+                        <div id="map"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script th:inline="javascript">
+        function initMap() {
+            // Replace these values with your latitude and longitude
+            var address = '[[${errand.errandLocation.address}]]';
+            var latitude = '[[${errand.errandLocation.latitude}]]';
+            var longitude = '[[${errand.errandLocation.longitude}]]';
+
+            var map = L.map('map').setView([latitude, longitude], 17);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            L.marker([latitude, longitude]).addTo(map)
+                .bindPopup(address)
+                .openPopup();
+        }
+        initMap();
+    </script>
+</body>
+
+</html>

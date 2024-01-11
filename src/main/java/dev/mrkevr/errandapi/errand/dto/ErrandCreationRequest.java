@@ -18,7 +18,7 @@ public class ErrandCreationRequest {
 
 	@NotEmpty(message = "Field `employerId` must not be empty")
 	@Size(min = 10, max = 12, message = "Field `employerId` must be 10-12 chatacters")
-	String employerId;
+	String employerUsername;
 
 	@NotEmpty(message = "Field `title` must not be empty")
 	@Size(min = 6, max = 120, message = "Field `title` must be 6-120 chatacters")

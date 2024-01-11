@@ -2,10 +2,9 @@ package dev.mrkevr.errandapi.user.api;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
@@ -52,14 +51,10 @@ class UserController {
 			userResponses = userService.getAllWithQuery(page, size, query);
 		}
 		
-		String title = "Users";
-		Map<String, Object> body = new HashMap<>();
-		body.put("page", page);
-		body.put("size", size);
-		body.put("users", userResponses);
-		
-		ResponseEntityBody responseEntityBody = ResponseEntityBody.of(title, HttpStatus.OK, body);
-		return ResponseEntity.ok(responseEntityBody);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Total-Count", String.valueOf(userResponses.size()));
+		ResponseEntityBody responseEntityBody = ResponseEntityBody.of("Users", HttpStatus.OK, userResponses);
+		return new ResponseEntity<ResponseEntityBody>(responseEntityBody, headers, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
@@ -73,8 +68,10 @@ class UserController {
 	
 	@PostMapping
 	ResponseEntity<ResponseEntityBody> save(
-			@Valid @RequestPart(name = "userCreationRequest") UserCreationRequest userCreationRequest,
-			@Valid @ValidImageFile @RequestParam(name = "avatarImageFile", required = true) MultipartFile avatarImageFile) throws IOException {
+			@Valid @RequestPart(name = "userCreationRequest") 
+			UserCreationRequest userCreationRequest,
+			@Valid @ValidImageFile @RequestParam(name = "avatarImageFile", required = true) 
+			MultipartFile avatarImageFile) throws IOException {
 		
 		UserResponse userResponse = userService.add(userCreationRequest, avatarImageFile);
 		String title = "User created successfully";

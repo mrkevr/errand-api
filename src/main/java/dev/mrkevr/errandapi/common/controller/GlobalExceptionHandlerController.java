@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import dev.mrkevr.errandapi.common.exception.ApiException;
 import dev.mrkevr.errandapi.common.exception.ResourceNotFoundException;
 import jakarta.validation.ValidationException;
 
@@ -43,12 +44,15 @@ public class GlobalExceptionHandlerController extends ResponseEntityExceptionHan
 		ProblemDetail problemDetail = createProblemDetail(ex, HttpStatus.NOT_FOUND);
 		return ResponseEntity.of(problemDetail).build();
 	}
+	
+	@ExceptionHandler(ApiException.class)
+	public ResponseEntity<Object> handleApiException(ApiException ex) {
+		ProblemDetail problemDetail = createProblemDetail(ex, HttpStatus.BAD_REQUEST);
+		return ResponseEntity.of(problemDetail).build();
+	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleException(Exception ex) {
-		
-		ex.printStackTrace();
-		
 		ProblemDetail problemDetail = createProblemDetail(ex, HttpStatus.BAD_REQUEST);
 		return ResponseEntity.of(problemDetail).build();
 	}

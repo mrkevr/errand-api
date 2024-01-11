@@ -17,13 +17,17 @@ public @interface ValidImageFile {
 
 	String[] value() default { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE };
 
-	int width() default 150;
+	int minWidth() default 150;
+	
+	int minHeight() default 150;
+	
+	int maxWidth() default 150;
+	
+	int maxHeight() default 150;
+	
+	long size() default 100_000L;
 
-	int height() default 150;
-
-	long size() default 50_000L;
-
-	String message() default "Please upload a valid image file(png/jpg, 50kb or less, 150x150px)";
+	String message() default "Please upload a valid image file(png/jpg, 100kb or less, 150x150px)";
 
 	Class<?>[] groups() default {};
 
