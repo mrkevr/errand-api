@@ -1,5 +1,7 @@
 package dev.mrkevr.errandapi.errand.api;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,20 +14,28 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Controller
-@RequestMapping("/demo/errands")
+@RequestMapping("/mvc/errands")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ErrandDemoController {
-	
+public class ErrandMvcController {
+
 	ErrandService errandService;
-	
+
+	@GetMapping
+	ModelAndView displayErrands() {
+
+		List<ErrandResponse> errands = errandService.getAll();
+		ModelAndView mav = new ModelAndView("errand-list");
+		mav.addObject("errands", errands);
+
+		return mav;
+	}
+
 	@GetMapping("/{id}")
 	ModelAndView displayUser(@PathVariable String id) {
-
 		ErrandResponse errand = errandService.getById(id);
 		ModelAndView mav = new ModelAndView("errand-details");
 		mav.addObject("errand", errand);
-
 		return mav;
 	}
 }

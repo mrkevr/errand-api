@@ -1,39 +1,132 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thyleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Errands</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Paged Cards</title>
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-
 <body>
-    <div class="container my-5">
-        <div class="row justify-content-center">
-        
-        	<!-- TODO loop this -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <div class="card">
-                    <img src="https://source.unsplash.com/random/300x300" class="card-img-top p-3 img-fluid"
-                        alt="Errand Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Errand Title</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua.</p>
-                        <button class="btn btn-outline-primary btn-sm stretched-link">Details</button>
-                    </div>
-                </div>
-            </div>
-      		
-        </div>
+
+<div class="container my-5">
+    <div class="row" id="cardContainer">
+        <!-- Your cards will be dynamically added here -->
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" id="prevPage">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <!-- Page numbers will be dynamically added here -->
+            <li class="page-item" id="nextPage">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var errands = /*[[${errands}]]*/ [];
+    /*]]>*/
+	var contextPath = /*[[ @{/} ]]*/ '';
+    var cardsPerPage = 12;
+    var currentPage = 1;
+
+    function showCards(page) {
+        var startIndex = (page - 1) * cardsPerPage;
+        var endIndex = startIndex + cardsPerPage;
+
+        var cardContainer = document.getElementById('cardContainer');
+        cardContainer.innerHTML = '';
+
+        for (var i = startIndex; i < endIndex && i < errands.length; i++) {
+            var card = createCard(errands[i]);
+            cardContainer.appendChild(card);
+        }
+    }
+
+    function createCard(data) {
+        var cardDiv = document.createElement('div');
+        cardDiv.className = 'col-12 col-md-6 col-lg-4';
+
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+        	<img src="${data.imageUrl}" class="card-img-top p-3 img-fluid" alt="Errand Image">
+            <div class="card-body" data-id="${data.id}">
+                <h5 class="card-title">${data.title}</h5>
+                <p class="card-text">${data.description}</p>
+               
+             
+                <a href="contextPath/mvc/errands/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
+                <a href="'contextPath'/mvc/errands/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
+                <a href="@/mvc/errands/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
+                <a href="/mvc/errands/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
+                <a href="contextPath/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
+            </div>
+        `;
+
+        cardDiv.appendChild(card);
+        return cardDiv;
+    }
+    
+    /* http://localhost:9000/dev/mvc/contextPath/mvc/errands/36396018057 */
+    /* http://localhost:9000/dev/mvc/'contextPath'/mvc/errands/223619245370 */
+    /* http://localhost:9000/dev/mvc/@/mvc/errands/128693491143 */
+    
+    /* function redirectToDetails(link) {
+        var errandId = link.getAttribute('data-id');
+        // Redirect to the details page using the errandId
+        window.location.href = '/mvc/errands/' + errandId;
+    } */
+    
+    function updatePagination() {
+        var totalPages = Math.ceil(errands.length / cardsPerPage);
+        var prevPage = document.getElementById('prevPage');
+        var nextPage = document.getElementById('nextPage');
+
+        prevPage.classList.toggle('disabled', currentPage === 1);
+        nextPage.classList.toggle('disabled', currentPage === totalPages);
+    }
+
+    function changePage(page) {
+        if (page >= 1 && page <= Math.ceil(errands.length / cardsPerPage)) {
+            currentPage = page;
+            showCards(currentPage);
+            updatePagination();
+        }
+    }
+
+    document.getElementById('prevPage').addEventListener('click', function (e) {
+        e.preventDefault();
+        changePage(currentPage - 1);
+    });
+
+    document.getElementById('nextPage').addEventListener('click', function (e) {
+        e.preventDefault();
+        changePage(currentPage + 1);
+    });
+
+    // Initial setup
+    showCards(currentPage);
+    updatePagination();
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
 </html>

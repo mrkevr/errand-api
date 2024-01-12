@@ -18,10 +18,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Controller
-@RequestMapping("/demo/users")
+@RequestMapping("/mvc/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserDemoController {
+public class UserMvcController {
 
 	UserService userService;
 	TestimonialService testimonialService;
@@ -39,7 +39,7 @@ public class UserDemoController {
 			userResponses = userService.getAllWithQuery(page, size, query);
 		}
 
-		ModelAndView mav = new ModelAndView("users-demo");
+		ModelAndView mav = new ModelAndView("user-list");
 		mav.addObject("users", userResponses);
 		return mav;
 	}
@@ -50,7 +50,7 @@ public class UserDemoController {
 		UserResponse user = userService.getByUsername(username);
 		List<TestimonialResponse> testimonials = testimonialService.getAllByUserId(user.getId());
 		
-		ModelAndView mav = new ModelAndView("user-profile");
+		ModelAndView mav = new ModelAndView("user-details");
 		mav.addObject("user", user);
 		mav.addObject("testimonials", testimonials);
 		return mav;
