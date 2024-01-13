@@ -136,7 +136,7 @@ public class DevProfileConfig {
 			String description = faker.lorem().sentence(20);
 			String imageUrl = "https://source.unsplash.com/random/300x300";
 			ErrandLocation errandLocation = new ErrandLocation();
-			double compensation = faker.random().nextDouble();
+			double compensation = faker.random().nextDouble() * 1000;
 			errandLocation.setAddress(faker.address().fullAddress());
 			errandLocation.setLatitude(Double.valueOf(faker.address().latitude()));
 			errandLocation.setLongitude(Double.valueOf(faker.address().longitude()));		

@@ -27,11 +27,19 @@
                         alt="Errand Image">
                     <div class="card-body">
                         <p class="card-text" th:text="${errand.description}"></p>
-                        <p class="card-text"><strong>Posted: </strong><span th:text="${errand.posted}"></span></p>
+                        <p class="card-text">
+						    <strong>Posted: </strong>
+						    <span th:if="${errand.timeElapsedInHours == 0}">Less than an hour ago</span>
+						    <span th:if="${errand.timeElapsedInHours > 0 && errand.timeElapsedInHours < 72}" th:text="${errand.timeElapsedInHours + ' hours ago'}"></span>
+						    <span th:if="${errand.timeElapsedInHours >= 72 && errand.timeElapsedInHours < 168}">A few days ago</span>
+						    <span th:if="${errand.timeElapsedInHours >= 168 && errand.timeElapsedInHours < 336}">A week ago</span>
+						    <span th:if="${errand.timeElapsedInHours >= 336}">More than a week ago</span>
+						</p>
                         <p class="card-text"><strong>Category: </strong><span th:text="${errand.errandCategory}"></span></p>
-                        <p class="card-text"><strong>Employer: </strong><a th:text="${errand.employerUsername}" th:href="@{/demo/users/{username}(username=${errand.employerUsername})}"></a></p>
+                        <p class="card-text"><strong>Employer: </strong><a th:text="${errand.employerUsername}" th:href="@{/mvc/users/{username}(username=${errand.employerUsername})}"></a></p>
                         <p class="card-text"><strong>Status: </strong><span th:text="${errand.errandStatus}"></span></p>
-                        <button class="btn btn-outline-primary">Apply</button>
+                        <p class="card-text"><strong>Compensation: </strong><span th:text="'₱'+${#numbers.formatDecimal(errand.compensation, 0, 'COMMA', 2, 'POINT')}"></span></p>
+                        <button class="btn btn-primary">Apply</button>
                     </div>
                     <div class="card-footer">
                         <p class="card-text"><strong>Address: </strong><span th:text="${errand.errandLocation.address}"></span></p>

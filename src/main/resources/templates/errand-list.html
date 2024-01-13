@@ -39,7 +39,6 @@
     /*<![CDATA[*/
     var errands = /*[[${errands}]]*/ [];
     /*]]>*/
-	var contextPath = /*[[ @{/} ]]*/ '';
     var cardsPerPage = 12;
     var currentPage = 1;
 
@@ -67,30 +66,14 @@
             <div class="card-body" data-id="${data.id}">
                 <h5 class="card-title">${data.title}</h5>
                 <p class="card-text">${data.description}</p>
-               
-             
-                <a href="contextPath/mvc/errands/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
-                <a href="'contextPath'/mvc/errands/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
-                <a href="@/mvc/errands/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
-                <a href="/mvc/errands/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
-                <a href="contextPath/${data.id}" class="btn btn-outline-primary btn-sm stretched-link">Details</a>
+                <a href="errands/${data.id}" class="btn btn-primary btn-sm stretched-link">Details</a>
             </div>
         `;
 
         cardDiv.appendChild(card);
         return cardDiv;
     }
-    
-    /* http://localhost:9000/dev/mvc/contextPath/mvc/errands/36396018057 */
-    /* http://localhost:9000/dev/mvc/'contextPath'/mvc/errands/223619245370 */
-    /* http://localhost:9000/dev/mvc/@/mvc/errands/128693491143 */
-    
-    /* function redirectToDetails(link) {
-        var errandId = link.getAttribute('data-id');
-        // Redirect to the details page using the errandId
-        window.location.href = '/mvc/errands/' + errandId;
-    } */
-    
+       
     function updatePagination() {
         var totalPages = Math.ceil(errands.length / cardsPerPage);
         var prevPage = document.getElementById('prevPage');

@@ -1,5 +1,7 @@
 package dev.mrkevr.errandapi.errand.util;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,9 +29,6 @@ public class ErrandMapper {
 			.errandCategory(errandCreationRequest.getErrandCategory())
 			.errandStatus(ErrandStatus.VACANT)
 			.build();
-		
-		System.out.println(errand);
-		
 		return errand;
 	}
 	
@@ -46,6 +45,7 @@ public class ErrandMapper {
 			.compensation(errand.getCompensation())
 			.errandStatus(errand.getErrandStatus())
 			.posted(errand.getCreated().toLocalDate())
+			.timeElapsedInHours(this.getTimeElapsedInHours(errand.getCreated()))
 			.build();
 	}
 	
@@ -54,4 +54,10 @@ public class ErrandMapper {
 			.map(errand -> map(errand))
 			.collect(Collectors.toList());
 	}
+	
+	private long getTimeElapsedInHours(LocalDateTime postedDateTime) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Duration duration = Duration.between(postedDateTime, currentDateTime);
+        return duration.toHours();
+    }
 }

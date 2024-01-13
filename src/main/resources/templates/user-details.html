@@ -71,24 +71,22 @@
         <!-- Testimonial Section -->
         <div class="col-md-8">
             <h5 class="card-title">Testimonials</h5>
-            	
             	<th:block th:each="t : ${testimonials}">
 		            <div class="card testimonial-card">
 		                <div class="card-body">
 		                    <div class="media">
 		                        <div class="media-body">
 		                        	<div>
-		                        		<p><a class="mt-0 text-primary font-weight-bold" th:text="${t.testifierUsername}" th:href="@{/demo/users/{username}(username=${t.testifierUsername})}"></a></p>
+		                        		<p><a class="mt-0 text-primary font-weight-bold" th:text="${t.testifierUsername}" th:href="@{/mvc/users/{username}(username=${t.testifierUsername})}"></a></p>
 		                        		<span th:each="i : ${#numbers.sequence(1, 5)}" th:class="${t.rating >= i} ? 'fa fa-star checked' : 'fa fa-star unchecked'"></span>
 		                        	</div>
 		                            <p th:text="${t.content}"></p>
-		                            <span class="text-primary float-right" th:text="${#temporals.format(t.posted, 'MMMM dd, yyyy hh:mm a')}" style="font-size: 70%"></span>
+		                            <span class="text-primary float-right" th:text="${#temporals.format(t.posted, 'MMMM dd, yyyy')}" style="font-size: 70%"></span>
 		                        </div>
 		                    </div>
 		                </div>
 		            </div>
 	            </th:block>
-
         </div>
     </div>
 </div>

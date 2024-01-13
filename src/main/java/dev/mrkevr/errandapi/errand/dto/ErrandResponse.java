@@ -40,4 +40,6 @@ public class ErrandResponse {
 	ErrandStatus errandStatus;
 
 	LocalDate posted;
+	
+	long timeElapsedInHours;
 }
