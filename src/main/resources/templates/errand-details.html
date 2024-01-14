@@ -37,14 +37,17 @@
 						</p>
                         <p class="card-text"><strong>Category: </strong><span th:text="${errand.errandCategory}"></span></p>
                         <p class="card-text"><strong>Employer: </strong><a th:text="${errand.employerUsername}" th:href="@{/mvc/users/{username}(username=${errand.employerUsername})}"></a></p>
-                        <p class="card-text"><strong>Status: </strong><span th:text="${errand.errandStatus}"></span></p>
                         <p class="card-text"><strong>Compensation: </strong><span th:text="'₱'+${#numbers.formatDecimal(errand.compensation, 0, 'COMMA', 2, 'POINT')}"></span></p>
                         <button class="btn btn-primary">Apply</button>
                     </div>
-                    <div class="card-footer">
-                        <p class="card-text"><strong>Address: </strong><span th:text="${errand.errandLocation.address}"></span></p>
-                        <div id="map"></div>
-                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            	<div class="card">
+            		<div class="card-body">
+	                   <p class="card-text"><strong>Location: </strong><span th:text="${errand.errandLocation.address}"></span></p>
+	                   <div id="map"></div>
+            		</div>
                 </div>
             </div>
         </div>

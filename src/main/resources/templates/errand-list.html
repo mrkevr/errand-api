@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thyleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,107 +10,171 @@
         .card {
             margin-bottom: 20px;
         }
+
+        .big-checkbox>input {
+            width: 20px;
+            height: 20px;
+        }
+
+        .big-radio>input {
+            width: 20px;
+            height: 20px;
+        }
+
+        .pill-button {
+            border: none;
+            color: white;
+            padding: 3px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 16px;
+        }
     </style>
 </head>
+
 <body>
 
-<div class="container my-5">
-    <div class="row" id="cardContainer">
-        <!-- Your cards will be dynamically added here -->
+    <div class="container my-5">
+
+        <form id="filterForm" class="form-inline justify-content-center mb-3" action="#" th:action="@{/mvc/errands/search}" th:object="${searchModel}" method="get">
+            <div class="form-group mx-2">
+                <input class="form-control py-1 border border-primary" type="text" placeholder="search" th:field="*{keyword}">
+            </div>
+            <!-- Errand Categories Dropdown -->
+            <div class="form-group mx-2">
+                <div class="dropdown">
+                    <button class="btn btn-primary  dropdown-toggle pill-button" type="button" id="categoryDropdown"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Errand Categories
+                    </button>
+                    <div class="dropdown-menu p-2" aria-labelledby="categoryDropdown">
+						<th:block th:each="category, stat : ${T(dev.mrkevr.errandapi.errand.api.ErrandCategory).values()}">
+							<div class="form-check big-checkbox float-left">
+								<input class="form-check-input" type="checkbox" id="checkbox-1" th:field="*{errandCategories}" th:value="${{category}}"/>
+								<label class="form-check-label" style="width:190px" for="checkbox-1"><span th:text="${category.toString()}" class="text-left"></span></label>
+							</div>
+						</th:block>
+					</div>
+                </div>
+            </div>
+            <!-- Date Posted -->
+            <div class="form-group mx-2">
+                <div class="dropdown">
+                    <select class="form-select btn btn-primary pill-button" aria-label="Default select example" th:field="*{days}">
+                    	<option th:value="24" class="bg-white text-dark text-left">Last 24 hours</option>
+                        <option th:value="72" class="bg-white text-dark text-left">Last 3 days</option>
+                        <option th:value="168" class="bg-white text-dark text-left">Last 7 days</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Search Button -->
+            <div class="form-group mx-2">
+                <button type="submit" class="btn btn-primary btn-sm px-3">Search</button>
+            </div>
+        </form>
+
+        <div class="row" id="cardContainer">
+            <!-- Your cards will be dynamically added here -->
+        </div>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" id="prevPage">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!-- Page numbers will be dynamically added here -->
+                <li class="page-item" id="nextPage">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" id="prevPage">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <!-- Page numbers will be dynamically added here -->
-            <li class="page-item" id="nextPage">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var errands = /*[[${errands}]]*/[];
+        /*]]>*/
+        var cardsPerPage = 12;
+        var currentPage = 1;
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var errands = /*[[${errands}]]*/ [];
-    /*]]>*/
-    var cardsPerPage = 12;
-    var currentPage = 1;
+        function showCards(page) {
+            var startIndex = (page - 1) * cardsPerPage;
+            var endIndex = startIndex + cardsPerPage;
 
-    function showCards(page) {
-        var startIndex = (page - 1) * cardsPerPage;
-        var endIndex = startIndex + cardsPerPage;
+            var cardContainer = document.getElementById('cardContainer');
+            cardContainer.innerHTML = '';
 
-        var cardContainer = document.getElementById('cardContainer');
-        cardContainer.innerHTML = '';
-
-        for (var i = startIndex; i < endIndex && i < errands.length; i++) {
-            var card = createCard(errands[i]);
-            cardContainer.appendChild(card);
+            for (var i = startIndex; i < endIndex && i < errands.length; i++) {
+                var card = createCard(errands[i]);
+                cardContainer.appendChild(card);
+            }
         }
-    }
 
-    function createCard(data) {
-        var cardDiv = document.createElement('div');
-        cardDiv.className = 'col-12 col-md-6 col-lg-4';
+        function createCard(data) {
+            var cardDiv = document.createElement('div');
+            cardDiv.className = 'col-12 col-md-6 col-lg-4';
 
-        var card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
+            var card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
         	<img src="${data.imageUrl}" class="card-img-top p-3 img-fluid" alt="Errand Image">
             <div class="card-body" data-id="${data.id}">
                 <h5 class="card-title">${data.title}</h5>
                 <p class="card-text">${data.description}</p>
-                <a href="errands/${data.id}" class="btn btn-primary btn-sm stretched-link">Details</a>
+                <a href="${data.id}" class="btn btn-primary btn-sm stretched-link">Details</a>
             </div>
         `;
 
-        cardDiv.appendChild(card);
-        return cardDiv;
-    }
-       
-    function updatePagination() {
-        var totalPages = Math.ceil(errands.length / cardsPerPage);
-        var prevPage = document.getElementById('prevPage');
-        var nextPage = document.getElementById('nextPage');
-
-        prevPage.classList.toggle('disabled', currentPage === 1);
-        nextPage.classList.toggle('disabled', currentPage === totalPages);
-    }
-
-    function changePage(page) {
-        if (page >= 1 && page <= Math.ceil(errands.length / cardsPerPage)) {
-            currentPage = page;
-            showCards(currentPage);
-            updatePagination();
+            cardDiv.appendChild(card);
+            return cardDiv;
         }
-    }
 
-    document.getElementById('prevPage').addEventListener('click', function (e) {
-        e.preventDefault();
-        changePage(currentPage - 1);
-    });
+        function updatePagination() {
+            var totalPages = Math.ceil(errands.length / cardsPerPage);
+            var prevPage = document.getElementById('prevPage');
+            var nextPage = document.getElementById('nextPage');
 
-    document.getElementById('nextPage').addEventListener('click', function (e) {
-        e.preventDefault();
-        changePage(currentPage + 1);
-    });
+            prevPage.classList.toggle('disabled', currentPage === 1);
+            nextPage.classList.toggle('disabled', currentPage === totalPages);
+        }
 
-    // Initial setup
-    showCards(currentPage);
-    updatePagination();
-</script>
+        function changePage(page) {
+            if (page >= 1 && page <= Math.ceil(errands.length / cardsPerPage)) {
+                currentPage = page;
+                showCards(currentPage);
+                updatePagination();
+            }
+        }
 
+        document.getElementById('prevPage').addEventListener('click', function (e) {
+            e.preventDefault();
+            changePage(currentPage - 1);
+        });
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        document.getElementById('nextPage').addEventListener('click', function (e) {
+            e.preventDefault();
+            changePage(currentPage + 1);
+        });
+
+        // Initial setup
+        showCards(currentPage);
+        updatePagination();
+
+        function showSelected(item) {
+            document.getElementById("dropdownMenu1").innerHTML = item.innerHTML;
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
 </html>

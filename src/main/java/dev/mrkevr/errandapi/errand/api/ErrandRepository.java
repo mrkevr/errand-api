@@ -2,6 +2,7 @@ package dev.mrkevr.errandapi.errand.api;
 
 import java.util.List;
 
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -13,4 +14,7 @@ public interface ErrandRepository extends JpaRepository<Errand, String>, JpaSpec
 
 	@Query("SELECT e FROM Errand e WHERE e.employerUsername = :employerUsername AND e.errandStatus = :errandStatus")
 	List<Errand> findByEmployerIdAndErrandStatus(String employerUsername, ErrandStatus errandStatus, Pageable pageable);
+	
+	@Query("SELECT e FROM Errand e ORDER BY e.created DESC")
+	List<Errand> findLastCreatedErrands(Limit limit);
 }

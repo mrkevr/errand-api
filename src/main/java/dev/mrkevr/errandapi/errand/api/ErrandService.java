@@ -5,6 +5,7 @@ import static dev.mrkevr.errandapi.errand.api.ErrandSpecifications.addSpecificat
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -93,6 +94,36 @@ public class ErrandService {
 	    // Find all the errands using all the specifications
 	    List<Errand> errands = errandRepository.findAll(specifications);
 	    // Map to response object and return
+		return errandMapper.map(errands);
+	}
+
+	public List<ErrandResponse> searchBySpecifications(
+			String keyword, 
+			List<ErrandCategory> errandCategories,
+			Integer days) {
+		
+		// At least one must not be empty/null, else return exception
+		if (NullOrEmptyChecker.allNullOrEmpty(keyword, errandCategories, days)) {
+			throw new ApiException("Search values are all empty/null");
+		}
+		
+		// Initialize specifications
+		Specification<Errand> specifications  = Specification.where(null);
+		// Add category filter
+		specifications = addSpecificationIfNotNullOrEmpty(specifications, errandCategories, ErrandSpecifications::hasErrandCategory);
+	    // Add keyword filter
+		specifications = addSpecificationIfNotNullOrEmpty(specifications, keyword, ErrandSpecifications::hasKeyword);
+	    // Add days last posted filter
+		specifications = addSpecificationIfNotNullOrEmpty(specifications, days, ErrandSpecifications::postedLastNDays);
+		
+		// Find all the errands using all the specifications
+	    List<Errand> errands = errandRepository.findAll(specifications);
+	    // Map to response object and return
+		return errandMapper.map(errands);
+	}
+
+	public List<ErrandResponse> findLatestErrands(int limit) {
+		List<Errand> errands = errandRepository.findLastCreatedErrands(Limit.of(limit));
 		return errandMapper.map(errands);
 	}
 }

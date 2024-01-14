@@ -76,7 +76,7 @@ public class DevProfileConfig {
 			List<User> users = userRepository.findAll();
 			List<String> usernames = users.stream().map(user -> user.getUsername()).collect(Collectors.toList());
 			users.stream().forEach(user -> {
-				List<TestimonialCreationRequest> testimonialCreationRequests = this.getTestimonialCreationRequestForUser(user.getId(), usernames, 3);
+				List<TestimonialCreationRequest> testimonialCreationRequests = this.getTestimonialCreationRequestForUser(user.getId(), usernames, 1);
 				testimonialCreationRequests.forEach(testimonial -> {
 					testimonialService.add(testimonial);
 				});
