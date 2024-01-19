@@ -2,79 +2,111 @@
 <html xmlns:th="http://www.thyleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Errand Details</title>
-    <style>
-        #map {
-            height: 400px;
-        }
-    </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<title>Errand Details</title>
+<style>
+#map {
+	height: 400px;
+}
+.sticky-navbar {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 
 <body>
-    <div class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title" th:text="${errand.title}"></h5>
-                    </div>
-                    <img th:src="${errand.imageUrl}" class="card-img-top p-3 img-fluid"
-                        alt="Errand Image">
-                    <div class="card-body">
-                        <p class="card-text" th:text="${errand.description}"></p>
-                        <p class="card-text">
-						    <strong>Posted: </strong>
-						    <span th:if="${errand.timeElapsedInHours == 0}">Less than an hour ago</span>
-						    <span th:if="${errand.timeElapsedInHours > 0 && errand.timeElapsedInHours < 72}" th:text="${errand.timeElapsedInHours + ' hours ago'}"></span>
-						    <span th:if="${errand.timeElapsedInHours >= 72 && errand.timeElapsedInHours < 168}">A few days ago</span>
-						    <span th:if="${errand.timeElapsedInHours >= 168 && errand.timeElapsedInHours < 336}">A week ago</span>
-						    <span th:if="${errand.timeElapsedInHours >= 336}">More than a week ago</span>
+
+	<!-- Nav -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-primary sticky-navbar">
+		<a class="navbar-brand text-light" href="#"><span th:text="${applicationName}"></span></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/users}">Runners</a></li>
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/errands}">Find Errands</a></li>
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">My Errands</a></li>
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">Delegated Errands</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container my-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title" th:text="${errand.title}"></h5>
+					</div>
+					<img th:src="${errand.imageUrl}" class="card-img-top p-3 img-fluid" alt="Errand Image">
+					<div class="card-body">
+						<p class="card-text" th:text="${errand.description}"></p>
+						<p class="card-text">
+							<strong>Posted: </strong> <span th:if="${errand.timeElapsedInHours == 0}">Less than an hour ago</span> <span
+								th:if="${errand.timeElapsedInHours > 0 && errand.timeElapsedInHours < 72}" th:text="${errand.timeElapsedInHours + ' hours ago'}"></span> <span
+								th:if="${errand.timeElapsedInHours >= 72 && errand.timeElapsedInHours < 168}">A few days ago</span> <span
+								th:if="${errand.timeElapsedInHours >= 168 && errand.timeElapsedInHours < 336}">A week ago</span> <span th:if="${errand.timeElapsedInHours >= 336}">More
+								than a week ago</span>
 						</p>
-                        <p class="card-text"><strong>Category: </strong><span th:text="${errand.errandCategory}"></span></p>
-                        <p class="card-text"><strong>Employer: </strong><a th:text="${errand.employerUsername}" th:href="@{/mvc/users/{username}(username=${errand.employerUsername})}"></a></p>
-                        <p class="card-text"><strong>Compensation: </strong><span th:text="'₱'+${#numbers.formatDecimal(errand.compensation, 0, 'COMMA', 2, 'POINT')}"></span></p>
-                        <button class="btn btn-primary">Apply</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-            	<div class="card">
-            		<div class="card-body">
-	                   <p class="card-text"><strong>Location: </strong><span th:text="${errand.errandLocation.address}"></span></p>
-	                   <div id="map"></div>
-            		</div>
-                </div>
-            </div>
-        </div>
-    </div>
+						<p class="card-text">
+							<strong>Category: </strong><span th:text="${errand.errandCategory}"></span>
+						</p>
+						<p class="card-text">
+							<strong>Employer: </strong><a th:text="${errand.employerUsername}" th:href="@{/mvc/users/{username}(username=${errand.employerUsername})}"></a>
+						</p>
+						<p class="card-text">
+							<strong>Compensation: </strong><span th:text="'₱'+${#numbers.formatDecimal(errand.compensation, 0, 'COMMA', 2, 'POINT')}"></span>
+						</p>
+						<button class="btn btn-primary">Apply</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<p class="card-text">
+							<strong>Location: </strong><span th:text="${errand.errandLocation.address}"></span>
+						</p>
+						<div id="map"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script th:inline="javascript">
-        function initMap() {
-            // Replace these values with your latitude and longitude
-            var address = '[[${errand.errandLocation.address}]]';
-            var latitude = '[[${errand.errandLocation.latitude}]]';
-            var longitude = '[[${errand.errandLocation.longitude}]]';
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script th:inline="javascript">
+					function initMap() {
+						// Replace these values with your latitude and longitude
+						var address = '[[${errand.errandLocation.address}]]';
+						var latitude = '[[${errand.errandLocation.latitude}]]';
+						var longitude = '[[${errand.errandLocation.longitude}]]';
 
-            var map = L.map('map').setView([latitude, longitude], 17);
+						var map = L.map('map').setView([ latitude, longitude ],
+								17);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
+						L
+								.tileLayer(
+										'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+										{
+											attribution : '© OpenStreetMap contributors'
+										}).addTo(map);
 
-            L.marker([latitude, longitude]).addTo(map)
-                .bindPopup(address)
-                .openPopup();
-        }
-        initMap();
-    </script>
+						L.marker([ latitude, longitude ]).addTo(map).bindPopup(
+								address).openPopup();
+					}
+					initMap();
+				</script>
 </body>
 
 </html>

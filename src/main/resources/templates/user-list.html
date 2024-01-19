@@ -1,41 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thyleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Fontawesome icons-->
-	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <title>Runners</title>
-    <style>
-        .user-card {
-            margin: 10px;
-            text-align: center;
-        }
-        .user-card img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .avatar-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 150px; /* Adjust the height based on your design */
-        }
-        .checked {
-            color: #0275d8;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- Fontawesome icons-->
+<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+<title>Runners</title>
+<style>
+.user-card {
+	margin: 10px;
+	text-align: center;
+}
 
-        .unchecked {
-            color: #ccc;
-        }
-    </style>
+.user-card img {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.avatar-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 150px; /* Adjust the height based on your design */
+}
+
+.checked {
+	color: #0275d8;
+}
+
+.unchecked {
+	color: #ccc;
+}
+
+.sticky-navbar {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+}
+</style>
 </head>
 
 <body>
-	
+
 	<!-- Nav -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-primary sticky-navbar">
 		<a class="navbar-brand text-light" href="#"><span th:text="${applicationName}"></span></a>
@@ -53,34 +62,36 @@
 		</div>
 	</nav>
 
-    <div class="container my-5">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <input type="text" class="form-control" id="searchInput" placeholder="Search by name or title">
-            </div>
-        </div>
-        <div class="row" id="userCards">
-            <div th:each="user : ${users}" class="col-md-4 col-lg-3">
-                <div class="card user-card">
-                    <div class="avatar-container mt-2">
-                        <img th:src="${user.avatarUrl}" class="card-img-top" alt="User Avatar">
-                    </div>
-                    <div>
-                    	<span th:each="i : ${#numbers.sequence(1, 5)}" th:class="${user.averageRating >= i} ? 'fa fa-star checked' : 'fa fa-star unchecked'"></span>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${user.name}"></h5>
-                        <p class="card-text" th:text="${user.title}"></p>
-                        <a th:href="@{/mvc/users/{username}(username=${user.username})}" class="btn btn-primary btn-sm stretched-link">View Profile</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-	
+	<div class="container my-5">
+		<div class="row mb-3">
+			<div class="col-md-6">
+				<input type="text" class="form-control" id="searchInput" placeholder="Search by name or title">
+			</div>
+		</div>
+		<div class="row" id="userCards">
+			<div th:each="user : ${users}" class="col-md-4 col-lg-3">
+				<div class="card user-card">
+					<div class="avatar-container mt-2">
+						<img th:src="${user.avatarUrl}" class="card-img-top" alt="User Avatar">
+					</div>
+					<div>
+						<span th:each="i : ${#numbers.sequence(1, 5)}" th:class="${user.averageRating >= i} ? 'fa fa-star checked' : 'fa fa-star unchecked'"></span>
+					</div>
+					<div class="card-body">
+						<h5 class="card-title" th:text="${user.name}"></h5>
+						<p class="card-text" th:text="${user.title}"></p>
+						<a th:href="@{/mvc/users/{username}(username=${user.username})}" class="btn btn-primary btn-sm stretched-link">View Profile</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> 
-    <script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script>
         $(document).ready(function () {
             // Search functionality
             $('#searchInput').on('input', function () {
@@ -97,6 +108,6 @@
             });
         });
     </script>
-    
+
 </body>
 </html>
