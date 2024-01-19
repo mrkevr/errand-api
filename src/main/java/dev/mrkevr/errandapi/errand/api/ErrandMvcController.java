@@ -1,6 +1,5 @@
 package dev.mrkevr.errandapi.errand.api;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -42,17 +41,15 @@ public class ErrandMvcController {
 	}
 	
 	@GetMapping("/search")
-	ModelAndView searchErrand(
-			@ModelAttribute("searchModel") 
-			ErrandSearchModel searchModel){
-		
+	ModelAndView searchErrand(@ModelAttribute("searchModel") ErrandSearchModel searchModel) {
+
 		System.out.println(searchModel);
-		
+
 		List<ErrandResponse> errands = errandService.searchBySpecifications(
-				searchModel.getKeyword(), 
-				searchModel.getErrandCategories(), 
-				searchModel.getDays());
-		
+			searchModel.getKeyword(), 
+			searchModel.getErrandCategories(), 
+			searchModel.getDays());
+
 		ModelAndView mav = new ModelAndView("errand-list");
 		mav.addObject("errands", errands);
 		return mav;
@@ -65,4 +62,6 @@ public class ErrandMvcController {
 		mav.addObject("errand", errand);
 		return mav;
 	}
+	
+	
 }

@@ -2,102 +2,116 @@
 <html xmlns:th="http://www.thyleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <title>Paged Cards</title>
-    <style>
-        .card {
-            margin-bottom: 20px;
-        }
-
-        .big-checkbox>input {
-            width: 20px;
-            height: 20px;
-        }
-
-        .big-radio>input {
-            width: 20px;
-            height: 20px;
-        }
-
-        .pill-button {
-            border: none;
-            color: white;
-            padding: 3px 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 16px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<title>Find Errands</title>
+<style>
+.card {
+	margin-bottom: 20px;
+}
+.big-checkbox>input {
+	width: 20px;
+	height: 20px;
+}
+.big-radio>input {
+	width: 20px;
+	height: 20px;
+}
+.pill-button {
+	border: none;
+	color: white;
+	padding: 3px 15px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 16px;
+}
+.sticky-navbar {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+}
+</style>
 </head>
 
 <body>
 
-    <div class="container my-5">
-
-        <form id="filterForm" class="form-inline justify-content-center mb-3" action="#" th:action="@{/mvc/errands/search}" th:object="${searchModel}" method="get">
-            <div class="form-group mx-2">
-                <input class="form-control py-1 border border-primary" type="text" placeholder="search" th:field="*{keyword}">
-            </div>
-            <!-- Errand Categories Dropdown -->
-            <div class="form-group mx-2">
-                <div class="dropdown">
-                    <button class="btn btn-primary  dropdown-toggle pill-button" type="button" id="categoryDropdown"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Errand Categories
-                    </button>
-                    <div class="dropdown-menu p-2" aria-labelledby="categoryDropdown">
+	<!-- Nav -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-primary sticky-navbar">
+		<a class="navbar-brand text-light" href="#"><span th:text="${applicationName}"></span></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/users}">Runners</a></li>
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/errands}">Find Errands</a></li>
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">My Errands</a></li>
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">Delegated Errands</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	<!-- Search Bar -->
+	<div class="container my-5">
+		<form id="filterForm" class="form-inline justify-content-center mb-3" action="#" th:action="@{/mvc/errands/search}" th:object="${searchModel}" method="get">
+			<!-- Keyword Text Field -->
+			<div class="form-group mx-2">
+				<input class="form-control py-1 border border-primary" type="text" placeholder="search" th:field="*{keyword}">
+			</div>
+			<!-- Errand Categories Dropdown -->
+			<div class="form-group mx-2">
+				<div class="dropdown">
+					<button class="btn btn-primary  dropdown-toggle pill-button" type="button" id="categoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Errand Categories</button>
+					<div class="dropdown-menu p-2" aria-labelledby="categoryDropdown">
 						<th:block th:each="category, stat : ${T(dev.mrkevr.errandapi.errand.api.ErrandCategory).values()}">
 							<div class="form-check big-checkbox float-left">
-								<input class="form-check-input" type="checkbox" id="checkbox-1" th:field="*{errandCategories}" th:value="${{category}}"/>
-								<label class="form-check-label" style="width:190px" for="checkbox-1"><span th:text="${category.toString()}" class="text-left"></span></label>
+								<input class="form-check-input" type="checkbox" id="checkbox-1" th:field="*{errandCategories}" th:value="${{category}}" /> <label class="form-check-label"
+									style="width: 190px" for="checkbox-1"><span th:text="${category.toString()}" class="text-left"></span></label>
 							</div>
 						</th:block>
 					</div>
-                </div>
-            </div>
-            <!-- Date Posted -->
-            <div class="form-group mx-2">
-                <div class="dropdown">
-                    <select class="form-select btn btn-primary pill-button" aria-label="Default select example" th:field="*{days}">
-                    	<option th:value="24" class="bg-white text-dark text-left">Last 24 hours</option>
-                        <option th:value="72" class="bg-white text-dark text-left">Last 3 days</option>
-                        <option th:value="168" class="bg-white text-dark text-left">Last 7 days</option>
-                    </select>
-                </div>
-            </div>
-            <!-- Search Button -->
-            <div class="form-group mx-2">
-                <button type="submit" class="btn btn-primary btn-sm px-3">Search</button>
-            </div>
-        </form>
+				</div>
+			</div>
+			<!-- Date Posted -->
+			<div class="form-group mx-2">
+				<div class="dropdown">
+					<select class="form-select btn btn-primary pill-button" aria-label="Default select example" th:field="*{days}">
+						<option th:value="24" class="bg-white text-dark text-left">Last 24 hours</option>
+						<option th:value="72" class="bg-white text-dark text-left">Last 3 days</option>
+						<option th:value="168" class="bg-white text-dark text-left">Last 7 days</option>
+					</select>
+				</div>
+			</div>
+			<!-- Search Button -->
+			<div class="form-group mx-2">
+				<button type="submit" class="btn btn-primary btn-sm px-3">Search</button>
+			</div>
+		</form>
 
-        <div class="row" id="cardContainer">
-            <!-- Your cards will be dynamically added here -->
-        </div>
+		<!-- Errand Cards -->
+		<div class="row" id="cardContainer">
+			<!-- Your cards will be dynamically added here -->
+		</div>
 
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" id="prevPage">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <!-- Page numbers will be dynamically added here -->
-                <li class="page-item" id="nextPage">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+		<!-- Page Navigation -->
+		<nav aria-label="Page navigation">
+			<ul class="pagination justify-content-center">
+				<li class="page-item" id="prevPage"><a class="page-link" href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+				</a></li>
+				<!-- Page numbers will be dynamically added here -->
+				<li class="page-item" id="nextPage"><a class="page-link" href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				</a></li>
+			</ul>
+		</nav>
+	</div>
 
-    <script th:inline="javascript">
+	<script th:inline="javascript">
         /*<![CDATA[*/
         var errands = /*[[${errands}]]*/[];
         /*]]>*/
@@ -170,11 +184,20 @@
         function showSelected(item) {
             document.getElementById("dropdownMenu1").innerHTML = item.innerHTML;
         }
+        
+    	 // Add an event listener for pagination links
+        document.querySelectorAll('.page-link').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default behavior of the link
+                changePage(parseInt(e.target.textContent)); // Assuming the page number is inside the link, parse it and change the page
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the page smoothly
+            });
+        });
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
 </html>

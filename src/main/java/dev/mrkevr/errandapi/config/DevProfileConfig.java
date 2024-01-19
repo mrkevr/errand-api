@@ -125,6 +125,7 @@ public class DevProfileConfig {
 		return list;
 	}
 	
+
 	@Order(value = Ordered.LOWEST_PRECEDENCE)
 	private List<Errand> getFakeErrands(List<String> userNames) {
 		List<Errand> fakeErrands = new ArrayList<>();
