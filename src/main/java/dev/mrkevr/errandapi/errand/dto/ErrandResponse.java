@@ -34,6 +34,8 @@ public class ErrandResponse {
 	ErrandCategory errandCategory;
 
 	ErrandLocation errandLocation;
+	
+	String contact;
 
 	double compensation;
 

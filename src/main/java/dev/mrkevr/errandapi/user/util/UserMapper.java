@@ -29,7 +29,6 @@ public class UserMapper {
 			.phone(userCreationRequest.getPhone())
 			.email(userCreationRequest.getEmail())
 			.aboutMe(userCreationRequest.getAboutMe())
-			.errandsWorked(0)
 			.averageRating(0)
 			.build();
 		return user;
@@ -46,7 +45,6 @@ public class UserMapper {
 			.averageRating(user.getAverageRating())
 			.phone(user.getPhone())
 			.email(user.getEmail())
-			.errandsWorked(user.getErrandsWorked())
 			.joined(user.getCreated().toLocalDate())
 			.build();
 	}

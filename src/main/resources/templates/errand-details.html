@@ -22,22 +22,8 @@
 
 <body>
 
-	<!-- Nav -->
-	<nav class="navbar navbar-expand-lg navbar-light bg-primary sticky-navbar">
-		<a class="navbar-brand text-light" href="#"><span th:text="${applicationName}"></span></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/users}">Runners</a></li>
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/errands}">Find Errands</a></li>
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">My Errands</a></li>
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">Delegated Errands</a></li>
-			</ul>
-		</div>
-	</nav>
+	<!-- Navigation-->
+	<nav th:replace="~{fragments::nav}"></nav>
 
 	<div class="container my-5">
 		<div class="row justify-content-center">
@@ -63,9 +49,12 @@
 							<strong>Employer: </strong><a th:text="${errand.employerUsername}" th:href="@{/mvc/users/{username}(username=${errand.employerUsername})}"></a>
 						</p>
 						<p class="card-text">
+							<strong>Contact: </strong><span th:text="${errand.contact}"></span>
+						</p>
+						<p class="card-text">
 							<strong>Compensation: </strong><span th:text="'₱'+${#numbers.formatDecimal(errand.compensation, 0, 'COMMA', 2, 'POINT')}"></span>
 						</p>
-						<button class="btn btn-primary">Apply</button>
+						<button class="btn btn-primary">Save</button>
 					</div>
 				</div>
 			</div>

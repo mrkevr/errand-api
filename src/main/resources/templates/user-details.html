@@ -42,22 +42,8 @@
 </head>
 <body>
 
-	<!-- Nav -->
-	<nav class="navbar navbar-expand-lg navbar-light bg-primary sticky-navbar">
-		<a class="navbar-brand text-light" href="#"><span th:text="${applicationName}"></span></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/users}">Runners</a></li>
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/errands}">Find Errands</a></li>
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">My Errands</a></li>
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">Delegated Errands</a></li>
-			</ul>
-		</div>
-	</nav>
+	<!-- Navigation-->
+	<nav th:replace="~{fragments::nav}"></nav>
 
 	<div class="container my-5">
 		<div class="row">
@@ -78,9 +64,6 @@
 						</div>
 						<div class="info-container">
 							<i class="fa-solid fa-phone text-primary"></i> <span class="h6" th:text="${user.phone}"></span>
-						</div>
-						<div class="info-container">
-							<i class="fa-solid fa-handshake text-primary"></i> <span class="h6" th:text="${user.errandsWorked}"></span>
 						</div>
 						<div class="info-container">
 							<i class="fa-solid fa-user-plus text-primary"></i> <span class="h6" th:text="${#temporals.format(user.joined, 'MMMM yyyy')}"></span>

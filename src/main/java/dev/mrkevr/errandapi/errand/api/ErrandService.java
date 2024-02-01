@@ -45,15 +45,15 @@ public class ErrandService {
 	}
 	
 	public ErrandResponse add(
-			ErrandCreationRequest errandCreationRequest,
-			MultipartFile errandImageFile) throws IOException {
-		
+		ErrandCreationRequest errandCreationRequest, 
+		MultipartFile errandImageFile) throws IOException {
+
 		Errand errandToSave = errandMapper.map(errandCreationRequest);
-		
+
 		// Save the image file and save the image url to user
 		String imageUrl = imageFileService.save(errandImageFile);
 		errandToSave.setImageUrl(imageUrl);
-		
+
 		Errand savedErrand = errandRepository.saveAndFlush(errandToSave);
 		return errandMapper.map(savedErrand);
 	}
@@ -65,12 +65,12 @@ public class ErrandService {
 	}
 
 	public List<ErrandResponse> searchBySpecifications(
-			String keyword, 
-			List<ErrandCategory> errandCategories, 
-			Integer days, 
-			List<ErrandStatus> errandStatuses,
-			Double minCompensation,
-			Double maxCompensation) {
+		String keyword, 
+		List<ErrandCategory> errandCategories, 
+		Integer days, 
+		List<ErrandStatus> errandStatuses, 
+		Double minCompensation, 
+		Double maxCompensation) {
 		
 		// At least one must not be empty/null, else return exception
 		if (NullOrEmptyChecker.allNullOrEmpty(keyword, errandCategories, days, errandStatuses, minCompensation, maxCompensation)) {

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<!-- Head -->
+<head th:fragment="head">
+
+</head>
+
+<body>
+	<!-- Navigation-->
+	<nav th:fragment="nav" class="navbar navbar-expand-lg navbar-light bg-primary sticky-navbar">
+		<a class="navbar-brand text-light" href="#"><span th:text="${applicationName}"></span></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/users}">Runners</a></li>
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/errands}">Find Errands</a></li>
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">Published Errands</a></li>
+				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">Saved Errands</a></li>
+			</ul>
+		</div>
+	</nav>
+
+
+</body>

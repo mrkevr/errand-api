@@ -41,6 +41,7 @@ public class ErrandMapper {
 			.description(errand.getDescription())
 			.imageUrl(errand.getImageUrl())
 			.errandLocation(errand.getErrandLocation())
+			.contact(errand.getContact())
 			.errandCategory(errand.getErrandCategory())
 			.compensation(errand.getCompensation())
 			.errandStatus(errand.getErrandStatus())

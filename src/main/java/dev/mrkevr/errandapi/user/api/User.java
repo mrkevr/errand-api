@@ -51,9 +51,6 @@ public class User extends GenericEntity {
 	@Lob
 	@Column(name = "about_me")
 	String aboutMe;
-
-	@Column(name = "errands_worked")
-	int errandsWorked;
 	
 	@Column(name = "average_rating")
 	int averageRating;

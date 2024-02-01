@@ -30,7 +30,7 @@ public class ErrandSpecifications {
 			return builder.or(titlePredicate, descriptionPredicate);
 		};
 	}
-
+	
 	public static Specification<Errand> postedLastNDays(Integer days) {
 		LocalDateTime startDate = LocalDateTime.now().minusDays(days);
 		return (root, query, builder) -> builder.greaterThanOrEqualTo(root.get("created"), startDate);

@@ -61,6 +61,9 @@ public class Errand extends GenericEntity {
 		@AttributeOverride(name = "longitude", column = @Column(name = "longitude")) })
 	ErrandLocation errandLocation;
 	
+	@Column(name = "contact")
+	String contact;
+	
 	@Column(name = "compensation")
 	double compensation;
 	

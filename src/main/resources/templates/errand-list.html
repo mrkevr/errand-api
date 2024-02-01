@@ -38,23 +38,9 @@
 </head>
 
 <body>
-
-	<!-- Nav -->
-	<nav class="navbar navbar-expand-lg navbar-light bg-primary sticky-navbar">
-		<a class="navbar-brand text-light" href="#"><span th:text="${applicationName}"></span></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/users}">Runners</a></li>
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/mvc/errands}">Find Errands</a></li>
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">My Errands</a></li>
-				<li class="nav-item"><a class="nav-link text-light" th:href="@{/}">Delegated Errands</a></li>
-			</ul>
-		</div>
-	</nav>
+	
+	<!-- Navigation-->
+	<nav th:replace="~{fragments::nav}"></nav>
 	
 	<!-- Search Bar -->
 	<div class="container my-5">
@@ -67,7 +53,8 @@
 			<div class="form-group mx-2">
 				<div class="dropdown">
 					<button class="btn btn-primary  dropdown-toggle pill-button" type="button" id="categoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Errand Categories</button>
+						Errand Categories
+					</button>
 					<div class="dropdown-menu p-2" aria-labelledby="categoryDropdown">
 						<th:block th:each="category, stat : ${T(dev.mrkevr.errandapi.errand.api.ErrandCategory).values()}">
 							<div class="form-check big-checkbox float-left">
@@ -112,12 +99,13 @@
 	</div>
 
 	<script th:inline="javascript">
+	
         /*<![CDATA[*/
         var errands = /*[[${errands}]]*/[];
-        /*]]>*/
         var cardsPerPage = 12;
         var currentPage = 1;
-
+        /*]]>*/
+        
         function showCards(page) {
             var startIndex = (page - 1) * cardsPerPage;
             var endIndex = startIndex + cardsPerPage;
@@ -185,7 +173,7 @@
             document.getElementById("dropdownMenu1").innerHTML = item.innerHTML;
         }
         
-    	 // Add an event listener for pagination links
+    	// Add an event listener for pagination links
         document.querySelectorAll('.page-link').forEach(function(link) {
             link.addEventListener('click', function(e) {
                 e.preventDefault(); // Prevent default behavior of the link
@@ -193,6 +181,7 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the page smoothly
             });
         });
+    	
     </script>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
