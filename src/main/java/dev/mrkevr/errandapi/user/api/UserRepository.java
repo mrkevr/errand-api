@@ -23,10 +23,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 	boolean existsByUsername(String username);
 	
 	@Modifying
-	@Query("UPDATE User u SET u.errandsWorked = u.errandsWorked + 1 WHERE u.id = :id")
-	int incrementErrandsWorkedById(String id);
-	
-	@Modifying
 	@Query("UPDATE User u SET u.averageRating = :newAverageRating WHERE u.id = :id")
 	int updateAverageRatingById(String id, int newAverageRating);
 }

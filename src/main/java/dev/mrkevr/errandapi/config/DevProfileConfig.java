@@ -59,7 +59,7 @@ public class DevProfileConfig {
 	@Order(1)
 	DataSourceInitializer dataSourceInitializer_User(@Qualifier("dataSource") final DataSource dataSource) {
 	    ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-	    resourceDatabasePopulator.addScript(new ClassPathResource("/sql/mock_users_1000.sql"));
+	    resourceDatabasePopulator.addScript(new ClassPathResource("/sql/mock_users_100.sql"));
 	    DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
 	    dataSourceInitializer.setDataSource(dataSource);
 	    dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);

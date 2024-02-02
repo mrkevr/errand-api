@@ -60,11 +60,6 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void incrementErrandsWorkedById(String id) {
-		userRepository.incrementErrandsWorkedById(id);
-	}
-	
-	@Transactional
 	public UserResponse add(
 			UserCreationRequest userCreationRequest, 
 			MultipartFile avatarImageFile) throws IOException {
